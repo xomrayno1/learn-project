@@ -35,6 +35,6 @@ public class InvoiceService {
 	}
 	
 	public Invoice invoiceById(long invoiceId) {
-		return invoiceRepo.getOne(invoiceId);
+		return invoiceRepo.findOne(invoiceId);
 	}
 }

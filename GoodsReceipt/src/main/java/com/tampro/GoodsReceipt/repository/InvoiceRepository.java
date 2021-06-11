@@ -11,4 +11,6 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long>, JpaSpec
 	
 	boolean exists(long invoiceId);
 	
+	Invoice findOne(long invoiceId);
+	
 }

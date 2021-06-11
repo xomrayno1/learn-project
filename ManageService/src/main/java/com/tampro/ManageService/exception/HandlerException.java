@@ -1,4 +1,4 @@
-package com.tampro.GoodsReceipt.exception;
+package com.tampro.ManageService.exception;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.tampro.GoodsReceipt.response.APIStatus;
+import com.tampro.ManageService.response.APIStatus;
 
 @ControllerAdvice
 public class HandlerException extends ResponseEntityExceptionHandler{

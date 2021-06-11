@@ -1,10 +1,10 @@
-package com.tampro.GoodsReceipt.exception;
+package com.tampro.ManageService.exception;
 
 import java.util.Date;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.tampro.GoodsReceipt.response.APIStatus;
+import com.tampro.ManageService.response.APIStatus;
 
 import lombok.Getter;
 import lombok.Setter;
