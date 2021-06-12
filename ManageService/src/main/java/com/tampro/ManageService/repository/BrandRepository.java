@@ -9,7 +9,7 @@ import com.tampro.ManageService.entity.Brand;
 @Repository
 public interface BrandRepository extends JpaRepository<Brand, Long>, JpaSpecificationExecutor<Brand>{
 
-	boolean exists(long brandId);
+	 
 	
-	Brand findOne(long brandId);
+	
 }

@@ -21,7 +21,7 @@ public class BrandService {
 	}
 	
 	boolean isExist(long brandId) {
-		 return brandRepo.exists(brandId);
+		 return true;
 	}
 	
 	public Brand save(Brand brand) {
@@ -33,6 +33,6 @@ public class BrandService {
 	}
 	
 	public Brand productById(long brandId) {
-		return brandRepo.findOne(brandId);
+		return null;
 	}
 }

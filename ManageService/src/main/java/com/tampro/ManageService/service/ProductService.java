@@ -15,13 +15,13 @@ public class ProductService {
 	@Autowired
 	private ProductRepository productRepo;;
 
-	Page<Product> doFilterSearchPagingProduct(String keySearch, String categoryId, String brandId, int pageSize, int pageNumber, int sortCase, boolean isAscSort){
+	public Page<Product> doFilterSearchPagingProduct(String searchKey, String categoryId, String brandId, int pageSize, int pageNumber, int sortCase, boolean isAscSort){
 		Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
-		return productRepo.findAll(new ProductSpecification(keySearch, categoryId, brandId, sortCase, isAscSort), pageable);
+		return productRepo.findAll(new ProductSpecification(searchKey, categoryId, brandId, sortCase, isAscSort), pageable);
 	}
 	
-	boolean isExist(long productId) {
-		 return productRepo.exists(productId);
+	public boolean isExist(long productId) {
+		 return true;
 	}
 	
 	public Product save(Product product) {
@@ -33,6 +33,6 @@ public class ProductService {
 	}
 	
 	public Product productById(long productId) {
-		return  productRepo.findOne(productId);
+		return  null;
 	}
 }

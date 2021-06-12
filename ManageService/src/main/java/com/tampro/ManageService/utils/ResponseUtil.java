@@ -8,17 +8,17 @@ import com.tampro.ManageService.response.APIStatus;
 
 public class ResponseUtil {
 	
-	public APIResponse createShowAPIResponse(APIStatus apiStatus, Object data) {
+	public static APIResponse createShowAPIResponse(APIStatus apiStatus, Object data) {
 		return new APIResponse(apiStatus, data);
 	}
 	
 	//build response
-	public ResponseEntity<APIResponse> buildResponse(APIStatus apiStatus, Object data, HttpStatus httpStatus){
+	public static ResponseEntity<APIResponse> buildResponse(APIStatus apiStatus, Object data, HttpStatus httpStatus){
 		return new ResponseEntity(createShowAPIResponse(apiStatus, data), httpStatus);
 	}
 	
 	//response success
-	public ResponseEntity<APIResponse> responseSuccess(Object data){
+	public static ResponseEntity<APIResponse> responseSuccess(Object data){
 		return buildResponse(APIStatus.OK, data, HttpStatus.OK);
 	}
 }

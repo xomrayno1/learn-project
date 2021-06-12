@@ -27,14 +27,8 @@ public class Product extends BaseEntity{
 	private String weight;
 	private BigDecimal price;
 	private String imgUrl;
-//	@ManyToOne
-//	@JoinColumn(name = "category_id")
-//	private Category category;
-	@Column(name = "category", nullable = false)
+	@Column(name = "category_id", nullable = false)
 	private long categoryId;
-//	@ManyToOne
-//	@JoinColumn(name = "brand_id")
-//	private Brand brand;
 	@Column(name = "brand_id", nullable = false)
 	private long brandId;
 	

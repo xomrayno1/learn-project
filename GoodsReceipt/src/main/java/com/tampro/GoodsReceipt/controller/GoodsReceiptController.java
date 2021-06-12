@@ -20,4 +20,7 @@ public class GoodsReceiptController {
 	 
 		return "instance" + instanceName + " _ Request Id : " + requestId;
 	}
+	
+	//"MKH-" + dateReplaced + "-" + (cusNear.size() + 1)
+	//(cusNear.size() + 1): Số column đc tạo ngay hôm đó  + 1
 }

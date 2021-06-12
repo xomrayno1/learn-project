@@ -9,9 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductPagingSearchSortModel {
-	private String keySearch;
-	private long categoryId;
-	private long brandId;
+	private String searchKey;
+	private String categoryId;
+	private String brandId;
     private int pageNumber;
     private int pageSize;
     private int sortCase;

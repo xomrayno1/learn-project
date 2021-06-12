@@ -9,7 +9,7 @@ import com.tampro.ManageService.entity.Category;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long>, JpaSpecificationExecutor<Category>{
 	
-	boolean exists(long categoryId);
+	 
 	
-	Category findOne(long categoryId);
+	
 }

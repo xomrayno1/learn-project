@@ -9,9 +9,9 @@ import com.tampro.ManageService.entity.Product;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product>{
 	
-	boolean exists(long productId);
+	 
 	
-	Product findOne(long productId);
+	
 
 	 
 	

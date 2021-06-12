@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryPagingSearchSortModel {
-	private String keySearch;
+	private String searchKey;
     private int pageNumber;
     private int pageSize;
     private int sortCase;

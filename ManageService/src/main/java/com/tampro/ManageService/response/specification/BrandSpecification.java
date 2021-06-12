@@ -29,9 +29,7 @@ public class BrandSpecification implements Specification<Brand>{
 		if(searchKey != null && !searchKey.trim().isEmpty()) {
 			String wrapSearch = "%" + searchKey.trim() + "%";
 			Predicate brandName = criteriaBuilder.like(root.get("name"), wrapSearch);
-			Predicate brandId = criteriaBuilder.like(root.get("id"), wrapSearch);
-			Predicate search = criteriaBuilder.or(brandName, brandId);
-			predicates.add(search);
+			predicates.add(brandName);
 		}
 		
 		Path orderClause;

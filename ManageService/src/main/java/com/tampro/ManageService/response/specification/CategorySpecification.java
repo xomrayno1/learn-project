@@ -28,9 +28,7 @@ public class CategorySpecification implements Specification<Category>{
 		if(searchKey != null && !searchKey.trim().isEmpty()) {
 			String wrapSearch = "%" + searchKey.trim() + "%";
 			Predicate cateName = criteriaBuilder.like(root.get("name"), wrapSearch);
-			Predicate cateId = criteriaBuilder.like(root.get("id"), wrapSearch);
-			Predicate search = criteriaBuilder.or(cateName, cateId);
-			predicates.add(search);
+			predicates.add(cateName);
 		}
 		
 		Path orderClause;

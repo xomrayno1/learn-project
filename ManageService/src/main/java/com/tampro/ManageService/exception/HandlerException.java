@@ -65,7 +65,7 @@ public class HandlerException extends ResponseEntityExceptionHandler{
 	
 	@ExceptionHandler(ApplicationException.class)
 	private ResponseEntity<ErrorDetail> handleException(ApplicationException ae, WebRequest request){
-		ErrorDetail errorDetail = new ErrorDetail(new Date(), ae.getCode(),ae.getMessage(),request.getDescription(false));
+		ErrorDetail errorDetail = new ErrorDetail(new Date(), ae.getCode(),ae.getMsg(),request.getDescription(false));
 		return new ResponseEntity<ErrorDetail>(errorDetail, HttpStatus.BAD_REQUEST);
 	}
 	

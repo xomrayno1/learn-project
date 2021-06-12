@@ -31,23 +31,23 @@ public class ProductSpecification implements Specification<Product>{
 		
 		if(searchKey != null && !searchKey.trim().isEmpty()) {
 			String wrapSearch = "%" + searchKey.trim() +"%";
-			Predicate proId = criteriaBuilder.like(root.get("id"), wrapSearch);
+			System.out.println(wrapSearch);
 			Predicate proName = criteriaBuilder.like(root.get("name"), wrapSearch);
 			Predicate proCode = criteriaBuilder.like(root.get("code"), wrapSearch);
-			Predicate search = criteriaBuilder.or(proId, proName, proCode);
+			Predicate search = criteriaBuilder.or(proName, proCode);
 			predicates.add(search);
 		}
-		
-		if(categoryId != null && categoryId.trim().isEmpty()) {
-			Root<Category> rootCate = query.from(Category.class);
-			predicates.add(criteriaBuilder.equal(rootCate.get("id"), categoryId));
-			predicates.add(criteriaBuilder.equal(root.get("id"), rootCate.get("id")));
+		 
+		if(categoryId != null && !categoryId.trim().isEmpty()) {
+			Root<Category> cateRoot = query.from(Category.class);
+			predicates.add(criteriaBuilder.equal(cateRoot.get("id"), categoryId));
+			predicates.add(criteriaBuilder.equal(root.get("categoryId"), cateRoot.get("id")));
 		}
-		
-		if(brandId != null && brandId.trim().isEmpty()) {
-			Root<Brand> rootBrand = query.from(Brand.class);	
-			predicates.add(criteriaBuilder.equal(rootBrand.get("id"), brandId));
-			predicates.add(criteriaBuilder.equal(root.get("id"), rootBrand.get("id")));
+		 
+		if(brandId != null && !brandId.trim().isEmpty()) {
+			Root<Brand> brandRoot = query.from(Brand.class);	
+			predicates.add(criteriaBuilder.equal(brandRoot.get("id"), brandId));
+			predicates.add(criteriaBuilder.equal(root.get("brandId"), brandRoot.get("id")));
 		}
 		//select * from s  inner join a on a.id = s.id where a.id = 1
 		
@@ -61,6 +61,12 @@ public class ProductSpecification implements Specification<Product>{
 				break;
 			case Constant.SORT_BY_PRODUCT_CODE:
 				orderClause = root.get("code");
+				break;
+			case Constant.SORT_BY_PRODUCT_CATEGORY:
+				orderClause = root.get("categoryId");
+				break;
+			case Constant.SORT_BY_PRODUCT_BRAND:
+				orderClause = root.get("brandId");
 				break;
 			default:
 				orderClause = root.get("id");
@@ -94,6 +100,14 @@ public class ProductSpecification implements Specification<Product>{
 
 	public String getBrandId() {
 		return brandId;
+	}
+
+	public int getSortCase() {
+		return sortCase;
+	}
+
+	public boolean isAscSort() {
+		return isAscSort;
 	}
 
 	
