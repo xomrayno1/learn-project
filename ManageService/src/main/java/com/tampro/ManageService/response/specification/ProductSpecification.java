@@ -68,13 +68,17 @@ public class ProductSpecification implements Specification<Product>{
 			case Constant.SORT_BY_PRODUCT_BRAND:
 				orderClause = root.get("brandId");
 				break;
+			case Constant.SORT_BY_PRODUCT_PRICE:
+				orderClause = root.get("price");
+				break;
 			default:
 				orderClause = root.get("id");
-				break;
 		}
 		if(isAscSort) {
+			System.out.println("asc");
 			query.orderBy(criteriaBuilder.asc(orderClause));
 		}else {
+			System.out.println("desc");
 			query.orderBy(criteriaBuilder.desc(orderClause));
 		}
 		

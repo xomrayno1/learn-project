@@ -1,5 +1,7 @@
 package com.tampro.ManageService.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,8 +22,8 @@ public class ProductService {
 		return productRepo.findAll(new ProductSpecification(searchKey, categoryId, brandId, sortCase, isAscSort), pageable);
 	}
 	
-	public boolean isExist(long productId) {
-		 return true;
+	public boolean isExist(long proId) {
+		 return productRepo.findById(proId) != null ? true : false;
 	}
 	
 	public Product save(Product product) {
@@ -32,7 +34,18 @@ public class ProductService {
 		productRepo.deleteById(productId);
 	}
 	
-	public Product productById(long productId) {
-		return  null;
+	public Product getOne(long productId) {
+		return productRepo.getOne(productId);
+	}
+	public Product productById(long proId) {
+		return productRepo.findById(proId).orElse(null);
+	}
+	
+	public Product productByCode(String code) {
+		return productRepo.findByCode(code);
+	}
+	
+	public List<Product> productByActiveFlag(int activeFlag){
+		return productRepo.findByActiveFlag(activeFlag);
 	}
 }

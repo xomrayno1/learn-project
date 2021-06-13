@@ -2,6 +2,10 @@ package com.tampro.ManageService.utils;
 
 public interface Constant {
 	
+	public static final int YET_ACTIVE = 0;
+	public static final int ACTIVE = 1;
+	
+	
 	/*
 	 * define sort
 	 */
@@ -20,7 +24,7 @@ public interface Constant {
 	public static final int SORT_BY_PRODUCT_CODE = 3;
 	public static final int SORT_BY_PRODUCT_BRAND = 4;
 	public static final int SORT_BY_PRODUCT_CATEGORY = 5;
-	
+	public static final int SORT_BY_PRODUCT_PRICE = 6;
 	
 	
 	//cross origin
@@ -42,4 +46,23 @@ public interface Constant {
 	public static final String PRODUCT_DELETE = "/product_delete";
 	public static final String PRODUCT_UPDATE = "/product_update";
 	public static final String PRODUCT_CREATE = "/product_create";
+	public static final String PRODUCT_GET_LIST_ACTIVE = "/product_get_list_active";
+	
+	//category API
+	public static final String CATEGORY_API = API_PREFIX + "/categories";
+	public static final String CATEGORY_GET_LIST_PAGING_SORT_SEARCH_FILTER = "/category_get_list_paging_sort_search_filter";
+	public static final String CATEGORY_GET_DETAIL= "/category_get_detail/{cateId}";
+	public static final String CATEGORY_DELETE = "/category_delete";
+	public static final String CATEGORY_UPDATE = "/category_update";
+	public static final String CATEGORY_CREATE = "/category_create";
+	public static final String CATEGORY_GET_LIST_ACTIVE = "/category_get_list_active";
+	
+	//brand API
+	public static final String BRAND_API = API_PREFIX + "/brands";
+	public static final String BRAND_GET_LIST_PAGING_SORT_SEARCH_FILTER = "/brand_get_list_paging_sort_search_filter";
+	public static final String BRAND_GET_DETAIL = "/brand_get_detail/{braId}";
+	public static final String BRAND_DELETE = "/brand_delete";
+	public static final String BRAND_UPDATE = "/brand_update";
+	public static final String BRAND_CREATE = "/brand_create";
+	public static final String BRAND_GET_LIST_ACTIVE = "/brand_get_list_active";
 }

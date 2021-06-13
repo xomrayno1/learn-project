@@ -1,5 +1,6 @@
 package com.tampro.ManageService.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,8 +20,12 @@ public class Brand extends BaseEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+	@Column(name = "name", length = 32, nullable = false)
 	private String name;
+	@Column(name = "phone", length = 16, nullable = true)
 	private String phone;
+	@Column(name = "email", length = 32, nullable = true, unique = true)
 	private String email;
+	@Column(name = "address", length = 255, nullable = true)
 	private String address;
 }

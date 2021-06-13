@@ -15,7 +15,7 @@ public class ProductPagingSearchSortModel {
     private int pageNumber;
     private int pageSize;
     private int sortCase;
-    private boolean isAscSort;
+    private boolean ascSort;
 	
 	
 
