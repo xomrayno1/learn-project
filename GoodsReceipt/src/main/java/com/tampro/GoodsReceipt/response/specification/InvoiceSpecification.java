@@ -15,11 +15,13 @@ public class InvoiceSpecification implements Specification<Invoice>{
 	
 	private final Date toDate;
 	private final Date fromDate;
+	private final Date dateExport;
   
 	
-	public InvoiceSpecification(Date fromDate, Date toDate) {
+	public InvoiceSpecification(Date fromDate, Date toDate, Date dateExport) {
 		this.toDate = toDate;
 		this.fromDate = fromDate;
+		this.dateExport = dateExport;
 	}
 
 

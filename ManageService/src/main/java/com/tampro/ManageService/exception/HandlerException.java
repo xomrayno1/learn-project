@@ -32,7 +32,7 @@ public class HandlerException extends ResponseEntityExceptionHandler{
 		
 		ErrorDetail errorDetail = new ErrorDetail(new Date(), APIStatus.ERR_BAD_PARAMS,request.getDescription(false));
 		
-		if(fieldErrors.isEmpty()) {
+		if(!fieldErrors.isEmpty()) {
 			Map<String, String> error = new HashMap<String, String>();
 			for (FieldError item : fieldErrors) {
 				error.put(item.getField(), item.getDefaultMessage());			

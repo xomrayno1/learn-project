@@ -24,12 +24,19 @@ public enum APIStatus {
 	ERR_CREATE_CATEGORY(159, "Can't create category."),
 	ERR_UPDATE_CATEGORY(160, "Can't update category."),
 	//notify message category
-	ERR_BRAND_LIST_IS_EMPTY(216, "List of brand is null."),
-	ERR_BRAND_ID_NOT_EXIST(217, "Brand not exits."),
-	ERR_BRAND_NAME_ALREADY_EXISTS(218, "Brand already exists."),
-	ERR_CREATE_BRAND(219, "Can't create brand."),
-	ERR_UPDATE_BRAND(220, "Can't update brand.");
-    
+	ERR_SUPPLIER_LIST_IS_EMPTY(216, "List of supplier is null."),
+	ERR_SUPPLIER_ID_NOT_EXIST(217, "Supplier not exits."),
+	ERR_SUPPLIER_NAME_ALREADY_EXISTS(218, "Supplier name already exists."),
+	ERR_CREATE_SUPPLIER(219, "Can't create supplier."),
+	ERR_UPDATE_SUPPLIER(220, "Can't update supplier."),
+	ERR_SUPPLIER_EMAIL_ALREADY_EXISTS(221, "Supplier email already exists."),
+	//notify message category
+	ERR_BRAND_LIST_IS_EMPTY(256, "List of brand is null."),
+	ERR_BRAND_ID_NOT_EXIST(257, "Brand not exits."),
+	ERR_BRAND_NAME_ALREADY_EXISTS(258, "Brand already exists."),
+	ERR_CREATE_BRAND(259, "Can't create brand."),
+	ERR_UPDATE_BRAND(260, "Can't update brand."),
+	;
 	private final int code;
 	private final String description;
 

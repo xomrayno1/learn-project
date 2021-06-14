@@ -10,7 +10,13 @@ public enum APIStatus {
 	ERR_UNAUTHORIZED(401, "Unauthorized or Access Token is expired"),
 	ERR_FORBIDDEN(403, "Forbidden! Access denied"), 
 	ERR_BAD_PARAMS(406, "Bad parameters"),
-	INVALID_PARAMETER(407, "Invalid parameters");
+	INVALID_PARAMETER(407, "Invalid parameters"),
+	//notify message invoice
+	ERR_INVOICE_IS_EMPTY(516, "List of invoice is null"),
+	ERR_INVOICE_ID_NOT_EXIST(517, "Invoice not exist"),
+	ERR_CREATE_INVOICE(518, "Can't create invoice."),
+	ERR_UPDATE_INVOICE(519, "Can't update invoice."),
+	;
 
 	private final int code;
 	private final String description;

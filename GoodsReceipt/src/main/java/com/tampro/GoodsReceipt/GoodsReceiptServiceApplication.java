@@ -14,4 +14,5 @@ public class GoodsReceiptServiceApplication {
 		SpringApplication.run(GoodsReceiptServiceApplication.class, args);
 	}
 
+
 }

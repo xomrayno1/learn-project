@@ -29,8 +29,8 @@ public class CreateProductRequest {
 	private double price;
 	@NotBlank(message = "Category is required")
 	private long categoryId;
-	@NotBlank(message = "Brand is required")
-	private long brandId;
+	@NotBlank(message = "Supplier is required")
+	private long supplierId;
 	private MultipartFile imageUpload;
 	
 

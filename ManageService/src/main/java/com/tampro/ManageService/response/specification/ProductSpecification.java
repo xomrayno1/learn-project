@@ -11,7 +11,7 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import com.tampro.ManageService.entity.Brand;
+import com.tampro.ManageService.entity.Supplier;
 import com.tampro.ManageService.entity.Category;
 import com.tampro.ManageService.entity.Product;
 import com.tampro.ManageService.utils.Constant;
@@ -45,7 +45,7 @@ public class ProductSpecification implements Specification<Product>{
 		}
 		 
 		if(brandId != null && !brandId.trim().isEmpty()) {
-			Root<Brand> brandRoot = query.from(Brand.class);	
+			Root<Supplier> brandRoot = query.from(Supplier.class);	
 			predicates.add(criteriaBuilder.equal(brandRoot.get("id"), brandId));
 			predicates.add(criteriaBuilder.equal(root.get("brandId"), brandRoot.get("id")));
 		}
