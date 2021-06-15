@@ -1,12 +1,16 @@
 package com.tampro.GoodsReceipt.entity;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -18,6 +22,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@Table(name = "invoice")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -38,12 +43,12 @@ public class Invoice extends BaseEntity{
 	private double totalPrice;
 	@Column(name = "date_export", nullable = false)
 	@DateTimeFormat(pattern = "dd-MM-yyyy")
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.DATE)
 	private Date dateExport;
 	@Column(name = "supplier_id", nullable = false)
 	private long supplierId;
-	
-	
+	@OneToMany(mappedBy = "invoice", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
+	private List<InvoiceDetail> invoiceDetails;
 	
 
 }

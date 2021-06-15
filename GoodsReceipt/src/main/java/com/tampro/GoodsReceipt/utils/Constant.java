@@ -41,5 +41,6 @@ public interface Constant {
 	
 	//
 	public static final String PRODUCT_SERVICE_API = "http://manage-service/api/v1/products";
+	public static final String SUPPLIER_SERVICE_API = "http://manage-service/api/v1/suppliers";
 	
 }

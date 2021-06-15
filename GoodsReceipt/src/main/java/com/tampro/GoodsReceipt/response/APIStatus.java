@@ -16,6 +16,7 @@ public enum APIStatus {
 	ERR_INVOICE_ID_NOT_EXIST(517, "Invoice not exist"),
 	ERR_CREATE_INVOICE(518, "Can't create invoice."),
 	ERR_UPDATE_INVOICE(519, "Can't update invoice."),
+	ERR_INVOICE_SUPPLIER_NOT_EXIST(517, "Supplier not exist"),
 	;
 
 	private final int code;

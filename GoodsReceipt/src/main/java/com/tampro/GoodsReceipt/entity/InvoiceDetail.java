@@ -1,10 +1,14 @@
 package com.tampro.GoodsReceipt.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,14 +20,16 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "invoiceDetail")
 public class InvoiceDetail extends BaseEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	@Column(name = "product_id", nullable = false)
 	private long productId;
-	@Column(name = "invoice_id", nullable = false)
-	private long invoiceId;
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name = "invoice_id")
+	private Invoice invoice;
 	@Column(name = "price", nullable = false, columnDefinition = "Decimal(10,2)")
 	private double price;
 	@Column(name = "count", nullable = false, length = 5)
