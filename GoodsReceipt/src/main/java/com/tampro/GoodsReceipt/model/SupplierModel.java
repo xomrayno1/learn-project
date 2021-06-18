@@ -1,4 +1,4 @@
-package com.tampro.GoodsReceipt.model.request;
+package com.tampro.GoodsReceipt.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

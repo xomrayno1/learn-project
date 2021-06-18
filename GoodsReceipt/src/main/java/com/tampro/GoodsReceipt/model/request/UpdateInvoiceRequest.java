@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.tampro.GoodsReceipt.model.InvoiceDetailModel;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

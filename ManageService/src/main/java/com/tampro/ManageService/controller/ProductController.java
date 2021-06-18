@@ -1,6 +1,7 @@
 package com.tampro.ManageService.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -21,13 +22,19 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tampro.ManageService.entity.Brand;
+import com.tampro.ManageService.entity.Category;
 import com.tampro.ManageService.entity.Product;
 import com.tampro.ManageService.exception.ApplicationException;
 import com.tampro.ManageService.model.request.CreateProductRequest;
 import com.tampro.ManageService.model.request.ProductPagingSearchSortModel;
 import com.tampro.ManageService.model.request.UpdateProductRequest;
+import com.tampro.ManageService.model.response.ModelResponse;
+import com.tampro.ManageService.model.response.ProductResponse;
 import com.tampro.ManageService.response.APIResponse;
 import com.tampro.ManageService.response.APIStatus;
+import com.tampro.ManageService.service.BrandService;
+import com.tampro.ManageService.service.CategoryService;
 import com.tampro.ManageService.service.ProductService;
 import com.tampro.ManageService.utils.Constant;
 import com.tampro.ManageService.utils.ResponseUtil;
@@ -43,6 +50,11 @@ public class ProductController {
 	
 	@Autowired
 	private ProductService productService;
+	@Autowired
+	private BrandService brandService;
+	@Autowired
+	private CategoryService categoryService;
+	
 	
 	private ModelMapper mapper = new ModelMapper();
 	
@@ -58,22 +70,46 @@ public class ProductController {
 	@PostMapping(Constant.PRODUCT_GET_LIST_PAGING_SORT_SEARCH_FILTER)
 	public ResponseEntity<APIResponse> getListPagingSortSearchFilter(@RequestBody ProductPagingSearchSortModel ppssm) {
 		try {
-			Page<Product> listProduct = productService.doFilterSearchPagingProduct(ppssm.getSearchKey(), ppssm.getCategoryId(), 
+			mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+			
+			Page<Product> page = productService.doFilterSearchPagingProduct(ppssm.getSearchKey(), ppssm.getCategoryId(), 
 					ppssm.getBrandId(), ppssm.getPageSize(), ppssm.getPageNumber(), 
 					ppssm.getSortCase(), ppssm.isAscSort());
-			if(listProduct == null) {
+			if(page == null) {
 				throw new ApplicationException(APIStatus.ERR_PRODUCT_LIST_IS_EMPTY);
 			}
-			return ResponseUtil.responseSuccess(listProduct);
+			//mapper
+			List<ProductResponse> responses = page.getContent().stream().map(item -> {
+				ProductResponse productResponse = mapper.map(item, ProductResponse.class);
+				Brand brand = brandService.brandById(item.getBrandId());
+				Category category = categoryService.categoryById(item.getCategoryId());
+				productResponse.setBrandName(brand.getName());
+				productResponse.setCategoryName(category.getName());
+				return productResponse;
+			}).collect(Collectors.toList());
+			
+			ModelResponse modelResponse = 
+					new ModelResponse(responses, page.getTotalElements(), page.getPageable());
+			
+			return ResponseUtil.responseSuccess(modelResponse);
 		} catch (Exception e) {
-			throw new ApplicationException(APIStatus.ERR_PRODUCT_LIST_IS_EMPTY);
+			e.getStackTrace();
+			//throw new ApplicationException(APIStatus.ERR_PRODUCT_LIST_IS_EMPTY);
 		}
+		return null;
 	}
 	
 	@GetMapping(Constant.PRODUCT_GET_DETAIL)
 	public ResponseEntity<APIResponse> getProductDetail(@PathVariable("proId") long proId) {
+		//find product by id
 		Product product = productService.productById(proId);
 		if(product != null) {
+			//mapper
+			ProductResponse productResponse = mapper.map(product, ProductResponse.class);
+			Brand brand = brandService.brandById(product.getBrandId());
+			Category category = categoryService.categoryById(product.getCategoryId());
+			productResponse.setBrandName(brand.getName());
+			productResponse.setCategoryName(category.getName());
 			return ResponseUtil.responseSuccess(product);
 		}else {
 			throw new ApplicationException(APIStatus.ERR_PRODUCT_ID_NOT_EXIST);
@@ -166,8 +202,16 @@ public class ProductController {
 			if(products.isEmpty()) {
 				throw new ApplicationException(APIStatus.ERR_PRODUCT_LIST_IS_EMPTY);
 			}
+			List<ProductResponse> responses = products.stream().map(item -> {
+				ProductResponse productResponse = mapper.map(item, ProductResponse.class);
+				Brand brand = brandService.brandById(item.getBrandId());
+				Category category = categoryService.categoryById(item.getCategoryId());
+				productResponse.setBrandName(brand.getName());
+				productResponse.setCategoryName(category.getName());
+				return productResponse;
+			}).collect(Collectors.toList());
 			log.error("Get list successfully");
-			return ResponseUtil.responseSuccess(products);
+			return ResponseUtil.responseSuccess(responses);
 		} catch (Exception e) {
 			log.error("Error product get list is empty");
 			throw new ApplicationException(APIStatus.ERR_PRODUCT_LIST_IS_EMPTY);
