@@ -5,7 +5,7 @@ import Notifications from "views/Notifications.js";
 import TableList from "views/TableList.js";
 import Typography from "views/Typography.js";
 import UserProfile from "views/UserProfile.js";
-
+import BrandList from "views/Brand/BrandList"
 var routes = [
   {
     path: "/dashboard",
@@ -19,6 +19,12 @@ var routes = [
     name: "Icons",
     icon: "tim-icons icon-atom",
     component: Icons,
+    layout: "/admin",
+  },{
+    path: "/brands",
+    name: "Danh sách nhãn hiệu",
+    icon: "tim-icons icon-puzzle-10",
+    component: BrandList,
     layout: "/admin",
   },
   {
