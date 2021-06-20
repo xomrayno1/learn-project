@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import "../style/style.css"
 import {
     Card,
@@ -7,23 +7,45 @@ import {
     CardTitle,
     Row,
     Col,
-    Label
   } from "reactstrap";
-import {Table, Space, Button, Divider, Input, Modal, TextA} from 'antd'
-import {Form, Field, ErrorMessage, Formik} from 'formik'
+import {Table, Space, Button, Divider, Input, Spin} from 'antd'
+import {useDispatch, useSelector} from 'react-redux'
 
+import BrandModal from '../../views/Brand/BrandModal'
 import {confirm, warning} from '../../utils/AppUtils'
+import {getListPSSFBrand} from '../../redux/action/brandAction'
 
 function ListBrand(props) {
-  const {TextArea } = Input;
+  //get api
+  const dispatch = useDispatch();
+  const {isLoading, brands} = useSelector(state => state.brand);
+  const [filter, setFilter] = useState({
+    "searchKey" : "",
+    "sortCase" : 1,
+    "ascSort": true,
+    "pageNumber":1,
+    "pageSize": 2
+  });
+
+  useEffect(()=>{
+    dispatch(getListPSSFBrand({...filter}));
+  },[filter])
+
+  const onHandlePagination = (page) => {
+    setFilter({
+      ...filter,
+      pageNumber: page
+    })
+  }
+
+
+  const formRef = useRef();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [modal, setModal] = useState({
     visible: false, 
-    item : null,
     title: ''
   });
-  const formRef = useRef();
- 
+   
   const columns = [
     {
       title : 'Mã',
@@ -58,23 +80,7 @@ function ListBrand(props) {
       }
     }
   ]
-
-  const data = [
-    {
-      key : 1,
-      name : 'Red start', 
-      description : 'Chuyên cám gà cám vit',
-      create_date : '19/06/2021',
-      update_date : '19/06/2021',
-    },{
-      key : 2,
-      name : 'Yellow start', 
-      description : 'Chuyên cám heo',
-      create_date : '19/06/2021',
-      update_date : '19/06/2021',
-    }
-  ]
-  
+ 
   const rowSelection = {
     selectedRowKeys,
     onChange: (selectedRowKeys, selectedRows) => {
@@ -86,7 +92,6 @@ function ListBrand(props) {
     setModal({
       ...modal,
       visible: true,
-      item : data,
       title: 'Cập nhật nhãn hiệu',
     });
     setTimeout(() => {
@@ -95,11 +100,6 @@ function ListBrand(props) {
         description: data.description
       })
     }, 200);
-    //formRef.current.resetForm
-  }
-
-  const onHandleSave = (data) => {
-    console.log("save");
   }
 
   const onHandleDelete = ()=>{
@@ -124,8 +124,7 @@ function ListBrand(props) {
                             type="primary"
                             onClick={ () => setModal({
                               ...modal,
-                              visible: true,
-                              item : '',
+                              visible: true,                        
                               title: 'Thêm nhãn hiệu'
                             })}
                           >Thêm</Button>
@@ -138,87 +137,33 @@ function ListBrand(props) {
                         </Space>
                       </Col>
                       <Col md="4" sm="6">
-                        <Input placeholder="Nhập mã hoặc tên để tìm kiếm ...."/>
+                        <Input placeholder="Nhập tên để tìm kiếm ...."/>
                       </Col>
                       <Col md="2" sm="2">
                         <Button type="primary">Tìm kiếm</Button>
                       </Col>
                     </Row>
                     <Divider/>
-                    <Table
-                      columns={columns} 
-                      dataSource={data}
-                      rowSelection={rowSelection}
-                    />
+                    {/* rowKey={record => record.id} */}
+                    <Spin spinning={isLoading} tip="Đang tải">
+                      <Table
+                        columns={columns} 
+                        dataSource={brands.content || []}
+                        rowSelection={rowSelection}
+                        pagination= {{
+                          pageSize: brands.pageable && brands.pageable.pageSize || 10,
+                          current: brands.pageable && brands.pageable.pageNumber + 1,
+                          total : brands.totalElements,
+                          onChange: onHandlePagination,
+                        }}
+                      />
+                    </Spin>
                   </CardBody>
                 </Card>
               </Col>
 
            {/*Modal form*/}
-            <Modal
-              title={modal.title}
-              visible={modal.visible}
-              onOk={onHandleSave}
-              onCancel={ () => setModal({
-                ...modal,
-                visible: false,
-              })}
-              footer={[
-                <Button key="save" type="primary" onClick={onHandleSave}> 
-                  Lưu
-                </Button>,
-                <Button key="cancel"  
-                onClick={() => setModal({
-                  ...modal,
-                  visible: false,
-                })}>
-                  Huỷ
-                </Button>,
-              ]}
-            >
-            <Formik
-              initialValues={{
-                name : modal.item && modal.item.name || '',
-                description : '',
-              }}
-              onSubmit={onHandleSave}
-              innerRef={formRef}
-            >
-              <Form>
-                  <Row>
-                    <Col md="12">
-                      <Label>Tên nhãn hiệu :</Label>
-                      <Field name="name">
-                      {
-                        ({ field, form, meta })=> (
-                          <div>
-                            <Input {...field} type="text"  placeholder="Tên nhãn hiệu" />
-                          </div>
-                        )
-                      }
-                      </Field>
-                    </Col>
-                    <Col md="12">
-                      <ErrorMessage name="name" component="div" className="error-message"/>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col md="12">
-                      <Label>Mô tả :</Label>
-                      <Field name="description"> 
-                        {
-                          ({ field, form, meta })=> (
-                            <div>
-                              <TextArea {...field} placeholder="Mô tả" />
-                            </div>
-                          )
-                        }
-                      </Field>
-                    </Col>
-                  </Row>
-                </Form>
-            </Formik>
-            </Modal>
+            <BrandModal modal={modal} formRef={formRef} setModal={setModal}/>
 
             </Row>
           </div>

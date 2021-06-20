@@ -1,0 +1,40 @@
+//brand constant
+export const GET_LIST_PSSF_BRAND = 'GET_LIST_PSSF_BRAND';
+export const GET_LIST_PSSF_BRAND_SUCCESS = 'GET_LIST_PSSF_BRAND_SUCCESS';
+export const GET_LIST_PSSF_BRAND_FAILED = 'GET_LIST_PSSF_BRAND_FAILED';
+
+export const GET_ALL_BRAND = 'GET_ALL_BRAND';
+export const GET_ALL_BRAND_SUCCESS = 'GET_ALL_BRAND_SUCCESS';
+export const GET_ALL_BRAND_FAILED = 'GET_ALL_BRAND_FAILED';
+
+export const GET_BRAND = 'GET_BRAND';
+export const GET_BRAND_SUCCESS = 'GET_BRAND_SUCCESS';
+export const GET_BRAND_FAILED = 'GET_BRAND_FAILED';
+
+export const DELETE_BRAND = 'DELETE_BRAND';
+export const DELETE_BRAND_SUCCESS = 'DELETE_BRAND_SUCCESS';
+export const DELETE_BRAND_FAILED = 'DELETE_BRAND_FAILED';
+
+export const UPDATE_BRAND = 'UPDATE_BRAND';
+export const UPDATE_BRAND_SUCCESS = 'UPDATE_BRAND_SUCCESS';
+export const UPDATE_BRAND_FAILED = 'UPDATE_BRAND_FAILED';
+
+export const CREATE_BRAND = 'CREATE_BRAND';
+export const CREATE_BRAND_SUCCESS = 'CREATE_BRAND_SUCCESS';
+export const CREATE_BRAND_FAILED = 'CREATE_BRAND_FAILED';
+
+//REQUEST_SUCCESS
+export const REQUEST_SUCCESS = 'REQUEST_SUCCESS';
+export const REQUEST_FAILED = 'REQUEST_FAILED';
+
+//PATH API
+export const SEVER_PORT = 'http://localhost:8080';
+export const BRAND_SERVICE = '/manage-service'
+export const API_PREFIX = '/api/v1';
+
+//BRAND API
+export const BRAND_API = SEVER_PORT + BRAND_SERVICE + API_PREFIX + '/brands';
+export const BRAND_API_GET_LIST_PSSF = BRAND_API + '/brand_get_list_paging_sort_search_filter';
+
+//PRODUCT API
+export const PRODUCT_API = SEVER_PORT + BRAND_SERVICE + API_PREFIX + '/products';
