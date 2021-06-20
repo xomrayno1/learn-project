@@ -14,7 +14,7 @@ public interface Constant {
 	public static int SORT_BY_INVOICE_WEIGHT = 3;
 	
 	//cross origin
-	public static final String CROSS_ORIGIN = "http://localhost:3000/";
+	public static final String CROSS_ORIGIN = "http://localhost:3000";
 	
 	/*
 	 * define path
