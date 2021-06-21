@@ -14,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CreateCategoryRequest {
 	@NotBlank(message = "Name is required")
-	@Size(max = 3, min = 32, message = "Length must be between 3 and 32")
+	@Size(max = 32, min = 3, message = "Length must be between 3 and 32")
 	private String name;
 	private String description;
 }

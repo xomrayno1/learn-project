@@ -32,6 +32,10 @@ public class BrandSpecification implements Specification<Brand>{
 			predicates.add(brandName);
 		}
 		
+		
+		Predicate preActiveFlag = criteriaBuilder.equal(root.get("activeFlag"), 1);
+		predicates.add(preActiveFlag);
+		
 		Path orderClause;
 		switch (sortCase) {
 			case Constant.SORT_BY_BRAND_ID:
