@@ -22,31 +22,31 @@ import {
 } from '../../utils/Constant'
 
 const initialState = {
-    brands : '',
-    error : '',
-    ísLoading : false
+    brands: '',
+    error: '',
+    ísLoading: false
 }
 
-function brandReducer(state = initialState, action){
-    const {type, payload} = action;
-    switch(type){
+function brandReducer(state = initialState, action) {
+    const { type, payload } = action;
+    switch (type) {
         case GET_LIST_PSSF_BRAND:
             return {
                 ...state,
                 isLoading: true
             }
         case GET_LIST_PSSF_BRAND_SUCCESS:
-                return {
-                    ...state,
-                    isLoading: false,
-                    brands: payload
-                };
+            return {
+                ...state,
+                isLoading: false,
+                brands: payload,
+            };
         case GET_LIST_PSSF_BRAND_FAILED:
-                return {
-                    ...state,
-                    isLoading: false,
-                    error: payload
-                };
+            return {
+                ...state,
+                isLoading: false,
+                error: payload
+            }
         case GET_BRAND:
             return {
                 ...state,
@@ -57,15 +57,51 @@ function brandReducer(state = initialState, action){
                 ...state,
                 isLoading: true
             }
+        case CREATE_BRAND_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                brands: payload,
+            };
+        case CREATE_BRAND_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                error: payload
+            }
         case UPDATE_BRAND:
             return {
                 ...state,
                 isLoading: true
             }
+        case UPDATE_BRAND_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                brands: payload,
+            };
+        case UPDATE_BRAND_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                error: payload
+            }
         case DELETE_BRAND:
             return {
                 ...state,
                 isLoading: true
+            }
+        case DELETE_BRAND_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                brands: payload
+            };
+        case DELETE_BRAND_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                error: payload
             }
         case REQUEST_SUCCESS:
             return {
