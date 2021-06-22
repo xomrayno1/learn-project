@@ -51,6 +51,10 @@ public class ProductSpecification implements Specification<Product>{
 		}
 		//select * from s  inner join a on a.id = s.id where a.id = 1
 		
+		
+		Predicate preActiveFlag = criteriaBuilder.equal(root.get("activeFlag"), 1);
+		predicates.add(preActiveFlag);
+		
 		Path orderClause;
 		switch (sortCase) {
 			case Constant.SORT_BY_PRODUCT_ID:

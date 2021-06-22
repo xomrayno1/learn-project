@@ -14,8 +14,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UpdateBrandRequest {
 	private long id;
-	@NotBlank(message = "Name is required")
-	@Size(max = 32, min = 6, message = "Length must be between 6 and 32")
+	@NotBlank(message = "Không được để trống tên")
+	@Size(max = 32, min = 6, message = "Độ dài của trường từ 6 đến 32 kí tự")
 	private String name;
 	private String description;
 }

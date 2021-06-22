@@ -28,9 +28,14 @@ public class SupplierSpecification implements Specification<Supplier>{
 		
 		if(searchKey != null && !searchKey.trim().isEmpty()) {
 			String wrapSearch = "%" + searchKey.trim() + "%";
-			Predicate brandName = criteriaBuilder.like(root.get("name"), wrapSearch);
-			predicates.add(brandName);
+			Predicate preName = criteriaBuilder.like(root.get("name"), wrapSearch);
+			Predicate preEmail = criteriaBuilder.like(root.get("email"), wrapSearch);
+			Predicate preSearch = criteriaBuilder.or(preName, preEmail);
+			predicates.add(preSearch);
 		}
+
+		Predicate preActiveFlag = criteriaBuilder.equal(root.get("activeFlag"), 1);
+		predicates.add(preActiveFlag);
 		
 		Path orderClause;
 		switch (sortCase) {

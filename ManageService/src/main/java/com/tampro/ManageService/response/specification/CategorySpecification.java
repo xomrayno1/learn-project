@@ -31,6 +31,9 @@ public class CategorySpecification implements Specification<Category>{
 			predicates.add(cateName);
 		}
 		
+		Predicate preActiveFlag = criteriaBuilder.equal(root.get("activeFlag"), 1);
+		predicates.add(preActiveFlag);
+		
 		Path orderClause;
 		
 		switch (sortCase) {

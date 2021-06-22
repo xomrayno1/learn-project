@@ -29,6 +29,7 @@ import com.tampro.ManageService.model.request.UpdateSupplierRequest;
 import com.tampro.ManageService.response.APIResponse;
 import com.tampro.ManageService.response.APIStatus;
 import com.tampro.ManageService.service.SupplierService;
+import com.tampro.ManageService.utils.CommonUtil;
 import com.tampro.ManageService.utils.Constant;
 import com.tampro.ManageService.utils.ResponseUtil;
 
@@ -63,9 +64,9 @@ public class SupplierController {
 	}
 	
 	@GetMapping(value = Constant.SUPPLIER_GET_DETAIL)
-	public ResponseEntity<APIResponse> getSupplierDetail(@PathVariable("braId") long braId){
+	public ResponseEntity<APIResponse> getSupplierDetail(@PathVariable("supId") long supId){
 		try {
-			Supplier supplier = supplierService.supplierById(braId);
+			Supplier supplier = supplierService.supplierById(supId);
 			if(supplier == null) {
 				throw new ApplicationException(APIStatus.ERR_SUPPLIER_ID_NOT_EXIST);
 			}
@@ -83,6 +84,10 @@ public class SupplierController {
 		Supplier getSupplierByName = supplierService.supplierByName(supplierRequest.getName());
 		Supplier getSupplierByEmail = supplierService.supplierByEmail(supplierRequest.getEmail());
 		
+		if(CommonUtil.isValidPattern(supplierRequest.getEmail(), Constant.EMAIL_PATTERN)) {
+			log.error("error supplier email incorrect format");
+			throw new ApplicationException(APIStatus.ERR_SUPPLIER_EMAIL_INCORRECT_FORMAT);
+		}
 		if (getSupplierByName != null) {
 			log.error("error supplier name already exists");
 			throw new ApplicationException(APIStatus.ERR_SUPPLIER_NAME_ALREADY_EXISTS);
@@ -138,6 +143,10 @@ public class SupplierController {
 					log.error("error update supplier name already exist");
 					throw new ApplicationException(APIStatus.ERR_SUPPLIER_NAME_ALREADY_EXISTS);
 				}
+			}
+			if(CommonUtil.isValidPattern(supplierRequest.getEmail(), Constant.EMAIL_PATTERN)) {
+				log.error("error supplier email incorrect format");
+				throw new ApplicationException(APIStatus.ERR_SUPPLIER_EMAIL_INCORRECT_FORMAT);
 			}
 			if(supplierByEmail != null) {
 				if(!supplierByEmail.getEmail().equals(supplierById.getEmail())) {

@@ -15,12 +15,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UpdateSupplierRequest {
 	private long id;
-	@NotBlank(message = "Name is required")
-	@Size(max = 32, min = 6, message = "Length must be between 6 and 32")
+	@NotBlank(message = "Không được để trống tên")
+	@Size(max = 32, min = 6, message = "Độ dài của trường từ 6 đến 32 kí tự")
 	private String name;
-	@NotBlank(message = "Email is required")
-	@Email(message = "Please provide a properly formatted email address")
-	@Size(max = 32, min = 12, message = "Length must be between 12 and 32")
+	@NotBlank(message = "Không được để trống email")
+	@Email(message = "Email nhà cung cấp không đúng định dạng")
+	@Size(max = 32, min = 12, message = "Độ dài của trường từ 12 đến 32 kí tự")
 	private String email;
 	private String address;
 	private String phone;

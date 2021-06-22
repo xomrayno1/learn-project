@@ -15,21 +15,21 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UpdateProductRequest {
 	private long id;
-	@NotBlank(message = "Name is required")
-	@Size(max = 32, min = 6, message = "Length must be between 6 and 32")
+	@NotBlank(message = "Không được để trống tên")
+	@Size(max = 32, min = 6, message = "Độ dài của trường từ 6 đến 32 kí tự")
 	private String name;
-	@NotBlank(message = "Code is required")
-	@Size(max = 16, min = 2, message = "Length must be between 2 and 16")
+	@NotBlank(message = "Không được để trống code")
+	@Size(max = 16, min = 2, message = "Độ dài của trường từ 2 đến 16 kí tự")
 	private String code;
-	@NotBlank(message = "Weight is required")
-	@Size(max = 2, min = 3, message = "Length must be between 2 and 3")
+	@NotBlank(message = "Không được để trống cân nặng")
+	@Size(max = 3, min = 2, message = "Độ dài của trường từ 2 đến 3 kí tự")
 	private String weight;
-	@NotBlank(message = "Price is required")
-	@Size(max = 1, min = 10, message = "Length must be between 2 and 10")
+	@NotBlank(message = "Không được để trống giá")
+	@Size(max = 10, min = 2, message = "Độ dài của trường từ 2 đến 10 kí tự")
 	private double price;
-	@NotBlank(message = "Category is required")
+	@NotBlank(message = "Không được để trống danh mục")
 	private long categoryId;
-	@NotBlank(message = "Supplier is required")
-	private long supplierId;
+	@NotBlank(message = "Không được để trống thương hiệu")
+	private long brandId;
 	private MultipartFile imageUpload;
 }

@@ -13,8 +13,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateCategoryRequest {
-	@NotBlank(message = "Name is required")
-	@Size(max = 32, min = 3, message = "Length must be between 3 and 32")
+	@NotBlank(message = "Không được để trống tên")
+	@Size(max = 32, min = 3, message = "Độ dài của trường từ 3 đến 32 kí tự")
 	private String name;
 	private String description;
 }

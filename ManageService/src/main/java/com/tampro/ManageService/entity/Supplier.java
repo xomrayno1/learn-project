@@ -23,7 +23,6 @@ import lombok.Setter;
 public class Supplier extends BaseEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@JsonProperty("key")
 	private long id;
 	@Column(name = "name", length = 32, nullable = false)
 	private String name;

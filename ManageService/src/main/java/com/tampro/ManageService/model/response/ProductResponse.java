@@ -23,11 +23,9 @@ public class ProductResponse {
 	private String imgUrl;
 	@JsonProperty("category_name")
 	private String categoryName;
-	@JsonProperty("category_id")
 	private long categoryId;
 	@JsonProperty("brand_name")
 	private String brandName;
-	@JsonProperty("brand_id")
 	private long brandId;
 	@JsonProperty("active_flag")
 	private int activeFlag;

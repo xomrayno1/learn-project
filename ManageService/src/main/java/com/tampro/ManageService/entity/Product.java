@@ -29,7 +29,6 @@ public class Product extends BaseEntity implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //32 45 255 16
-	@JsonProperty("key")
 	private long id;
 	@Column(name = "name", nullable = false, length = 255)
 	private String name;

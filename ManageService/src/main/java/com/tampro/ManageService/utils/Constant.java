@@ -64,7 +64,7 @@ public interface Constant {
 	//supplier API
 	public static final String SUPPLIER_API = API_PREFIX + "/suppliers";
 	public static final String SUPPLIER_GET_LIST_PAGING_SORT_SEARCH_FILTER = "/supplier_get_list_paging_sort_search_filter";
-	public static final String SUPPLIER_GET_DETAIL = "/supplier_get_detail/{braId}";
+	public static final String SUPPLIER_GET_DETAIL = "/supplier_get_detail/{supId}";
 	public static final String SUPPLIER_DELETE = "/supplier_delete";
 	public static final String SUPPLIER_UPDATE = "/supplier_update";
 	public static final String SUPPLIER_CREATE = "/supplier_create";
@@ -78,4 +78,12 @@ public interface Constant {
 	public static final String BRAND_UPDATE = "/brand_update";
 	public static final String BRAND_CREATE = "/brand_create";
 	public static final String BRAND_GET_LIST_ACTIVE = "/brand_get_list_active";
+	
+	
+	 /**
+     * ****************************
+     * regular expression patterns
+     */
+	public static final String IMAGE_PATTERN = "((.*)*.+\\.(png|jpg|gif|bmp|jpeg|PNG|JPG|GIF|BMP)$)";
+	public static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 }
