@@ -26,16 +26,16 @@ import {
 } from 'antd'
 import {useDispatch, useSelector} from 'react-redux'
 
-import BrandModal from '../../views/Brand/BrandModal'
+import ProductModal from '../Product/ProductModal'
 import {confirm, warning} from '../../utils/AppUtils'
 import {
-  getListPSSFBrand,
-  deleteBrand
-} from '../../redux/action/brandAction'
+  getListPSSFProduct,
+  deleteProduct
+} from '../../redux/action/productAction'
 
-function ListBrand(props) {
+function ListProduct(props) {
   const dispatch = useDispatch();
-  const {isLoading, brands} = useSelector(state => state.brand);
+  const {isLoading, products} = useSelector(state => state.product);
   const [filter, setFilter] = useState({
     "searchKey" : "",
     "sortCase" : 1,
@@ -45,7 +45,7 @@ function ListBrand(props) {
   });
 
   useEffect(()=>{
-    dispatch(getListPSSFBrand({...filter}));
+    dispatch(getListPSSFProduct({...filter}));
   },[filter])
 
   const onHandlePagination = (page) => {
@@ -73,8 +73,17 @@ function ListBrand(props) {
       title : 'Tên nhãn hiệu',
       dataIndex: 'name',
     },{
-      title : 'Mô tả',
-      dataIndex: 'description',
+      title : 'Code',
+      dataIndex: 'code',
+    },{
+      title : 'Cân nặng',
+      dataIndex: 'weight',
+    },{
+      title : 'Thương hiệu',
+      dataIndex: 'brand_name',
+    },{
+      title : 'Danh mục',
+      dataIndex: 'category_name',
     },{
       title : 'Ngày tạo',
       dataIndex: 'create_date',
@@ -112,7 +121,7 @@ function ListBrand(props) {
     setModal({
       ...modal,
       visible: true,                        
-      title: 'Thêm nhãn hiệu'
+      title: 'Thêm sản phẩm'
     })
   }
 
@@ -120,7 +129,7 @@ function ListBrand(props) {
     setModal({
       ...modal,
       visible: true,
-      title: 'Cập nhật nhãn hiệu',
+      title: 'Cập nhật sản phẩm',
     });
     setTimeout(() => {
       formRef.current.setValues({
@@ -131,7 +140,7 @@ function ListBrand(props) {
 
   const onHandleDelete = () => {
     console.log("delete", selectedRowKeys);
-    dispatch(deleteBrand(selectedRowKeys));
+    dispatch(deleteProduct(selectedRowKeys));
     setSelectedRowKeys([]);
   }
   
@@ -164,7 +173,7 @@ function ListBrand(props) {
               <Col md="12">
                 <Card>
                   <CardHeader>
-                    <CardTitle tag="h4">Danh sách nhãn hiệu</CardTitle>
+                    <CardTitle tag="h4">Danh sách sản phẩm</CardTitle>
                   </CardHeader>
                   <CardBody>
                     <Row>
@@ -226,12 +235,12 @@ function ListBrand(props) {
                         <Spin spinning={isLoading} tip="Đang tải">
                           <Table
                             columns={columns} 
-                            dataSource={brands.content || []}
+                            dataSource={products.content || []}
                             rowSelection={rowSelection}
                             pagination= {{
-                              pageSize: brands.pageable && brands.pageable.pageSize || 10,
-                              current: brands.pageable && brands.pageable.pageNumber + 1,
-                              total : brands.totalElements,
+                              pageSize: products.pageable && products.pageable.pageSize || 10,
+                              current: products.pageable && products.pageable.pageNumber + 1,
+                              total : products.totalElements,
                               onChange: onHandlePagination,
                             }}
                             rowKey={record => record.id}
@@ -244,7 +253,7 @@ function ListBrand(props) {
               </Col>
 
            {/*Modal form*/}
-            <BrandModal 
+            <ProductModal 
               modal={modal} 
               formRef={formRef} 
               setModal={setModal}
@@ -256,4 +265,4 @@ function ListBrand(props) {
       );
 }
 
-export default ListBrand;
+export default ListProduct;

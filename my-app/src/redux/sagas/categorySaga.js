@@ -1,80 +1,73 @@
 import {takeLatest, put, call} from 'redux-saga/effects'
 
 import {
-    GET_LIST_PSSF_BRAND,
-    GET_LIST_PSSF_BRAND_SUCCESS,
-    GET_LIST_PSSF_BRAND_FAILED,
-    GET_BRAND,
-    GET_BRAND_SUCCESS,
-    GET_BRAND_FAILED,
-    DELETE_BRAND,
-    DELETE_BRAND_SUCCESS,
-    DELETE_BRAND_FAILED,
-    UPDATE_BRAND,
-    UPDATE_BRAND_SUCCESS,
-    UPDATE_BRAND_FAILED,
-    CREATE_BRAND,
-    CREATE_BRAND_SUCCESS,
-    CREATE_BRAND_FAILED,
-    REQUEST_FAILED,
-    REQUEST_SUCCESS,
+    GET_LIST_PSSF_CATEGORY,
+    GET_LIST_PSSF_CATEGORY_SUCCESS,
+    GET_LIST_PSSF_CATEGORY_FAILED,
+    DELETE_CATEGORY,
+    DELETE_CATEGORY_SUCCESS,
+    DELETE_CATEGORY_FAILED,
+    UPDATE_CATEGORY,
+    UPDATE_CATEGORY_SUCCESS,
+    UPDATE_CATEGORY_FAILED,
+    CREATE_CATEGORY,
+    CREATE_CATEGORY_SUCCESS,
+    CREATE_CATEGORY_FAILED,
     ERR_BAD_PARAMS,
-    OK,
     ERROR,
-    ErrBrandCode
+    ErrCategoryCode
 } from '../../utils/Constant'
 import {notiError, notiSuccess} from '../../utils/AppUtils'
-import brandAPI from '../../api/brandApi'
+import categoryAPI from '../../api/categoryApi'
 import getMessage from '../../utils/MessageList'
 
 
-function* getBrandPSSFilter({payload}){ // paging sort search filter
+function* getCategoryPSSFilter({payload}){ // paging sort search filter
     try {
-        const response = yield call(brandAPI.getListPagingSearchSortFilter, payload);
-        yield put({type: GET_LIST_PSSF_BRAND_SUCCESS, payload: response.data || ''});
+        const response = yield call(categoryAPI.getListPagingSearchSortFilter, payload);
+        yield put({type: GET_LIST_PSSF_CATEGORY_SUCCESS, payload: response.data || ''});
     } catch (error) {
         const {message} = error.response.data;
         notiError(message || 'ERROR')
-        yield put({type: GET_LIST_PSSF_BRAND_FAILED, payload: error})
+        yield put({type: GET_LIST_PSSF_CATEGORY_FAILED, payload: error})
     }
 }
 
-function* deleteBrand({payload}){ 
+function* deleteCategory({payload}){ 
     try {
        
-        yield call(brandAPI.deleteBrand, payload);
-        const resGet = yield call(brandAPI.getListPagingSearchSortFilter, {
+        yield call(categoryAPI.deleteCategory, payload);
+        const resGet = yield call(categoryAPI.getListPagingSearchSortFilter, {
             "searchKey" : "",
             "sortCase" : 1,
             "ascSort": true,
             "pageNumber":1,
             "pageSize": 5
         });
-        yield put({type: DELETE_BRAND_SUCCESS, payload: resGet.data || ''})
+        yield put({type: DELETE_CATEGORY_SUCCESS, payload: resGet.data || ''})
         notiSuccess(`Xoá thành công`);
     } catch (error) {
-        const {message } = error.response.data;
-        //const msg = getMessage(error.response.data.code || ERROR);
-        notiError(message)
-        yield put({type: DELETE_BRAND_FAILED, payload: error})
+        const {message} = error.response.data;
+        notiError(message || 'ERROR')
+        yield put({type: DELETE_CATEGORY_FAILED, payload: error})
     }
 }
 
-function* createBrand({payload, setModal}){ 
+function* createCategory({payload, setModal}){ 
     const {current} = payload;
     try {
         const form  = {
             ...current.values
         }
-        yield call(brandAPI.createBrand, form);
-        const resGet = yield call(brandAPI.getListPagingSearchSortFilter, {
+        yield call(categoryAPI.createCategory, form);
+        const resGet = yield call(categoryAPI.getListPagingSearchSortFilter, {
             "searchKey" : "",
             "sortCase" : 1,
             "ascSort": true,
             "pageNumber":1,
             "pageSize": 5
         });
-        yield put({type: CREATE_BRAND_SUCCESS, payload: resGet.data || ''})
+        yield put({type: CREATE_CATEGORY_SUCCESS, payload: resGet.data || ''})
         notiSuccess(`Thêm thành công`);
         setTimeout(()=>{ 
             setModal({visible: false})
@@ -82,14 +75,14 @@ function* createBrand({payload, setModal}){
         },200);
     } catch (err) {
         const {code, error, message} = err.response.data;
-        yield put({type: CREATE_BRAND_FAILED, payload: err})
+        yield put({type: CREATE_CATEGORY_FAILED, payload: err})
         switch(code){
             case ERR_BAD_PARAMS:
                 current.setErrors({
                     ...error
                 })
                 break;
-            case ErrBrandCode.ERR_BRAND_NAME_ALREADY_EXISTS:
+            case ErrCategoryCode.ERR_CATEGORY_NAME_ALREADY_EXISTS:
                 current.setErrors({
                     name: message
                 })
@@ -101,21 +94,21 @@ function* createBrand({payload, setModal}){
     }
 }
 
-function* updateBrand({payload, setModal}){ 
+function* updateCategory({payload, setModal}){ 
     const {current} = payload;
     try {
         const form  = {
             ...current.values
         }
-        yield call(brandAPI.updateBrand, form);
-        const resGet = yield call(brandAPI.getListPagingSearchSortFilter, {
+        yield call(categoryAPI.updateCategory, form);
+        const resGet = yield call(categoryAPI.getListPagingSearchSortFilter, {
             "searchKey" : "",
             "sortCase" : 1,
             "ascSort": true,
             "pageNumber":1,
             "pageSize": 5
         });
-        yield put({type: UPDATE_BRAND_SUCCESS, payload: resGet.data || ''})
+        yield put({type: UPDATE_CATEGORY_SUCCESS, payload: resGet.data || ''})
         notiSuccess(`Cập nhật thành công`);
         setTimeout(()=>{ 
             setModal({visible: false})
@@ -123,14 +116,14 @@ function* updateBrand({payload, setModal}){
         },200);
     } catch (err) {
         const {code, error, message} = err.response.data;
-        yield put({type: UPDATE_BRAND_FAILED, payload: err})
+        yield put({type: UPDATE_CATEGORY_FAILED, payload: err})
         switch(code){
             case ERR_BAD_PARAMS:
                 current.setErrors({
                     ...error
                 })
                 break;
-            case ErrBrandCode.ERR_BRAND_NAME_ALREADY_EXISTS:
+            case ErrCategoryCode.ERR_CATEGORY_NAME_ALREADY_EXISTS:
                 current.setErrors({
                     name: message
                 })
@@ -142,11 +135,11 @@ function* updateBrand({payload, setModal}){
     }
 }
 
-function* brandSaga(){
-    yield takeLatest(GET_LIST_PSSF_BRAND, getBrandPSSFilter);
-    yield takeLatest(DELETE_BRAND, deleteBrand);
-    yield takeLatest(CREATE_BRAND, createBrand);
-    yield takeLatest(UPDATE_BRAND, updateBrand);
+function* categorySaga(){
+    yield takeLatest(GET_LIST_PSSF_CATEGORY, getCategoryPSSFilter);
+    yield takeLatest(DELETE_CATEGORY, deleteCategory);
+    yield takeLatest(CREATE_CATEGORY, createCategory);
+    yield takeLatest(UPDATE_CATEGORY, updateCategory);
 }
 
-export default brandSaga;
+export default categorySaga;

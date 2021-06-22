@@ -1,11 +1,9 @@
 import axiosClient from "./axiosClient";
 import {
-    BRAND_API, 
     BRAND_API_GET_LIST_PSSF, 
     BRAND_API_CREATE,
     BRAND_API_UPDATE,
     BRAND_API_DELETE,
-    CATEGORY_API_CREATE
 } from '../utils/Constant'
 
 const brandAPI = {

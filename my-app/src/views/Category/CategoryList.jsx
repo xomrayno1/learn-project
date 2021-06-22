@@ -20,22 +20,20 @@ import {
   Button, 
   Divider, 
   Input, Spin, 
-  Menu, 
-  Dropdown, 
   Select
 } from 'antd'
 import {useDispatch, useSelector} from 'react-redux'
 
-import BrandModal from '../../views/Brand/BrandModal'
+import CategoryModal from '../Category/CategoryModal'
 import {confirm, warning} from '../../utils/AppUtils'
 import {
-  getListPSSFBrand,
-  deleteBrand
-} from '../../redux/action/brandAction'
+  getListPSSFCategory,
+  deleteCategory
+} from '../../redux/action/categoryAction'
 
-function ListBrand(props) {
+function ListCategory(props) {
   const dispatch = useDispatch();
-  const {isLoading, brands} = useSelector(state => state.brand);
+  const {isLoading, categories} = useSelector(state => state.category);
   const [filter, setFilter] = useState({
     "searchKey" : "",
     "sortCase" : 1,
@@ -45,7 +43,7 @@ function ListBrand(props) {
   });
 
   useEffect(()=>{
-    dispatch(getListPSSFBrand({...filter}));
+    dispatch(getListPSSFCategory({...filter}));
   },[filter])
 
   const onHandlePagination = (page) => {
@@ -70,7 +68,7 @@ function ListBrand(props) {
       dataIndex: 'id',
       responsive: ['sm'],
     },{
-      title : 'Tên nhãn hiệu',
+      title : 'Tên danh mục',
       dataIndex: 'name',
     },{
       title : 'Mô tả',
@@ -112,7 +110,7 @@ function ListBrand(props) {
     setModal({
       ...modal,
       visible: true,                        
-      title: 'Thêm nhãn hiệu'
+      title: 'Thêm danh mục'
     })
   }
 
@@ -120,7 +118,7 @@ function ListBrand(props) {
     setModal({
       ...modal,
       visible: true,
-      title: 'Cập nhật nhãn hiệu',
+      title: 'Cập nhật danh mục',
     });
     setTimeout(() => {
       formRef.current.setValues({
@@ -131,7 +129,7 @@ function ListBrand(props) {
 
   const onHandleDelete = () => {
     console.log("delete", selectedRowKeys);
-    dispatch(deleteBrand(selectedRowKeys));
+    dispatch(deleteCategory(selectedRowKeys));
     setSelectedRowKeys([]);
   }
   
@@ -164,7 +162,7 @@ function ListBrand(props) {
               <Col md="12">
                 <Card>
                   <CardHeader>
-                    <CardTitle tag="h4">Danh sách nhãn hiệu</CardTitle>
+                    <CardTitle tag="h4">Danh sách danh mục</CardTitle>
                   </CardHeader>
                   <CardBody>
                     <Row>
@@ -226,12 +224,12 @@ function ListBrand(props) {
                         <Spin spinning={isLoading} tip="Đang tải">
                           <Table
                             columns={columns} 
-                            dataSource={brands.content || []}
+                            dataSource={categories.content || []}
                             rowSelection={rowSelection}
                             pagination= {{
-                              pageSize: brands.pageable && brands.pageable.pageSize || 10,
-                              current: brands.pageable && brands.pageable.pageNumber + 1,
-                              total : brands.totalElements,
+                              pageSize: categories.pageable && categories.pageable.pageSize || 10,
+                              current: categories.pageable && categories.pageable.pageNumber + 1,
+                              total : categories.totalElements,
                               onChange: onHandlePagination,
                             }}
                             rowKey={record => record.id}
@@ -244,7 +242,7 @@ function ListBrand(props) {
               </Col>
 
            {/*Modal form*/}
-            <BrandModal 
+            <CategoryModal 
               modal={modal} 
               formRef={formRef} 
               setModal={setModal}
@@ -256,4 +254,4 @@ function ListBrand(props) {
       );
 }
 
-export default ListBrand;
+export default ListCategory;

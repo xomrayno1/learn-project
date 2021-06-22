@@ -8,17 +8,17 @@ import {
     Col,
     Label
   } from "reactstrap";
-import {createBrand, updateBrand} from '../../redux/action/brandAction'
+import {createCategory, updateCategory} from '../../redux/action/categoryAction'
 import { CustomInputText, CustomTextArea } from '../../variables/CustomInput'
 import { useState } from 'react';
  
  
-function BrandModal({modal, formRef, setModal}) {
+function CategoryModal({modal, formRef, setModal}) {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
      
 
-    const brandSchema = Yup.object({
+    const categorySchema = Yup.object({
         name: Yup.string().required("Không được để trống tên !"),
     })
 
@@ -41,9 +41,9 @@ function BrandModal({modal, formRef, setModal}) {
         
         wait.then(() => {
             if(data['id']){
-                dispatch(updateBrand(formRef, setModal));  
+                dispatch(updateCategory(formRef, setModal));  
             }else{
-                dispatch(createBrand(formRef, setModal));  
+                dispatch(createCategory(formRef, setModal));  
             }
         })
     }
@@ -64,13 +64,13 @@ function BrandModal({modal, formRef, setModal}) {
                 innerRef={formRef}
                 validateOnBlur={false}
                 validateOnChange={false}
-                validationSchema={brandSchema}
+                validationSchema={categorySchema}
             >
                 <Form>
                     <Row className="margin-5px">
                         <Col md="12">
-                            <Label>Tên nhãn hiệu :</Label>
-                            <Field name="name" as={CustomInputText} placeholder="Tên nhãn hiệu" />
+                            <Label>Tên danh mục :</Label>
+                            <Field name="name" as={CustomInputText} placeholder="Tên danh mục" />
                         </Col>
                         <Col md="12">
                             <ErrorMessage name="name" component="div" className="error-message" />
@@ -102,4 +102,4 @@ function BrandModal({modal, formRef, setModal}) {
         </Modal>
     )
 }
-export default BrandModal;
+export default CategoryModal;

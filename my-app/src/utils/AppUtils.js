@@ -1,4 +1,4 @@
-import { Modal } from 'antd';
+import { Modal, notification } from 'antd';
 
 export function confirm(text, onHanldeOk) {
     Modal.confirm({
@@ -10,16 +10,25 @@ export function confirm(text, onHanldeOk) {
     });
 }
 
-function error() {
-    Modal.error({
-      title: 'This is an error message',
-      content: 'some messages...some messages...',
-    });
-}
-
 export function warning(text) {
     Modal.warning({
       title: 'Cảnh báo',
       content: text,
     });
-  }
+}
+
+export const notiError =  (text) => {
+  notification.error({
+    message: `Lỗi`,
+    description: `${text}`,
+    placement: 'topRight'
+  });
+}
+
+export const notiSuccess=  (text) => {
+  notification.success({
+    message: ` Thành công `,
+    description:`${text}`,
+    placement: 'topRight'
+  });
+}

@@ -1,103 +1,103 @@
 import {
-    GET_ALL_BRAND,
-    GET_ALL_BRAND_SUCCESS,
-    GET_ALL_BRAND_FAILED,
-    GET_LIST_PSSF_BRAND,
-    GET_LIST_PSSF_BRAND_SUCCESS,
-    GET_LIST_PSSF_BRAND_FAILED,
-    GET_BRAND,
-    GET_BRAND_SUCCESS,
-    GET_BRAND_FAILED,
-    DELETE_BRAND,
-    DELETE_BRAND_SUCCESS,
-    DELETE_BRAND_FAILED,
-    UPDATE_BRAND,
-    UPDATE_BRAND_SUCCESS,
-    UPDATE_BRAND_FAILED,
-    CREATE_BRAND,
-    CREATE_BRAND_SUCCESS,
-    CREATE_BRAND_FAILED,
+    GET_ALL_CATEGORY,
+    GET_ALL_CATEGORY_SUCCESS,
+    GET_ALL_CATEGORY_FAILED,
+    GET_LIST_PSSF_CATEGORY,
+    GET_LIST_PSSF_CATEGORY_SUCCESS,
+    GET_LIST_PSSF_CATEGORY_FAILED,
+    GET_CATEGORY,
+    GET_CATEGORY_SUCCESS,
+    GET_CATEGORY_FAILED,
+    DELETE_CATEGORY,
+    DELETE_CATEGORY_SUCCESS,
+    DELETE_CATEGORY_FAILED,
+    UPDATE_CATEGORY,
+    UPDATE_CATEGORY_SUCCESS,
+    UPDATE_CATEGORY_FAILED,
+    CREATE_CATEGORY,
+    CREATE_CATEGORY_SUCCESS,
+    CREATE_CATEGORY_FAILED,
     REQUEST_FAILED,
     REQUEST_SUCCESS,
 } from '../../utils/Constant'
 
 const initialState = {
-    brands: '',
+    categories: '',
     error: '',
     isLoading: false,
 }
 
-function brandReducer(state = initialState, action) {
+function categoryReducer(state = initialState, action) {
     const { type, payload } = action;
     switch (type) {
-        case GET_LIST_PSSF_BRAND:
+        case GET_LIST_PSSF_CATEGORY:
             return {
                 ...state,
                 isLoading: true
             }
-        case GET_LIST_PSSF_BRAND_SUCCESS:
+        case GET_LIST_PSSF_CATEGORY_SUCCESS:
             return {
                 ...state,
                 isLoading: false,
-                brands: payload,
+                categories: payload,
             };
-        case GET_LIST_PSSF_BRAND_FAILED:
+        case GET_LIST_PSSF_CATEGORY_FAILED:
             return {
                 ...state,
                 isLoading: false,
                 error: payload
             }
-        case GET_BRAND:
+        case GET_CATEGORY:
             return {
                 ...state,
                 isLoading: true
             }
-        case CREATE_BRAND:
+        case CREATE_CATEGORY:
             return {
                 ...state,
                 isLoading: true
             }
-        case CREATE_BRAND_SUCCESS:
+        case CREATE_CATEGORY_SUCCESS:
             return {
                 ...state,
                 isLoading: false,
-                brands: payload,
+                categories: payload,
             };
-        case CREATE_BRAND_FAILED:
+        case CREATE_CATEGORY_FAILED:
             return {
                 ...state,
                 isLoading: false,
                 error: payload
             }
-        case UPDATE_BRAND:
+        case UPDATE_CATEGORY:
             return {
                 ...state,
                 isLoading: true
             }
-        case UPDATE_BRAND_SUCCESS:
+        case UPDATE_CATEGORY_SUCCESS:
             return {
                 ...state,
                 isLoading: false,
-                brands: payload,
+                categories: payload,
             };
-        case UPDATE_BRAND_FAILED:
+        case UPDATE_CATEGORY_FAILED:
             return {
                 ...state,
                 isLoading: false,
                 error: payload
             }
-        case DELETE_BRAND:
+        case DELETE_CATEGORY:
             return {
                 ...state,
                 isLoading: true
             }
-        case DELETE_BRAND_SUCCESS:
+        case DELETE_CATEGORY_SUCCESS:
             return {
                 ...state,
                 isLoading: false,
-                brands: payload
+                categories: payload
             };
-        case DELETE_BRAND_FAILED:
+        case DELETE_CATEGORY_FAILED:
             return {
                 ...state,
                 isLoading: false,
@@ -107,7 +107,7 @@ function brandReducer(state = initialState, action) {
             return {
                 ...state,
                 isLoading: false,
-                brands: payload
+                categories: payload
             };
         case REQUEST_FAILED:
             return {
@@ -122,4 +122,4 @@ function brandReducer(state = initialState, action) {
     }
 }
 
-export default brandReducer;
+export default categoryReducer;
