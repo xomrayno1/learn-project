@@ -25,7 +25,6 @@ public class UpdateProductRequest {
 	@Size(max = 3, min = 2, message = "Độ dài của trường từ 2 đến 3 kí tự")
 	private String weight;
 	@NotBlank(message = "Không được để trống giá")
-	@Size(max = 10, min = 2, message = "Độ dài của trường từ 2 đến 10 kí tự")
 	private double price;
 	@NotBlank(message = "Không được để trống danh mục")
 	private long categoryId;
