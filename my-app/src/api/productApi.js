@@ -10,13 +10,13 @@ const productAPI = {
     getListPagingSearchSortFilter: (params) =>{
         return axiosClient.post(PRODUCT_API_GET_LIST_PSSF, params)
     },
-    deleteProduct: (params) =>{
+    createProduct: (params) =>{
         return axiosClient.post(PRODUCT_API_CREATE, params)
     },
     updateProduct: (params) => {
         return axiosClient.put(PRODUCT_API_UPDATE, params);
     },
-    createProduct: (params) => {
+    deleteProduct: (params) => {
         return axiosClient.post(PRODUCT_API_DELETE, params);
     }
 }

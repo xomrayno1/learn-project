@@ -27,9 +27,13 @@ function* getCategoryPSSFilter({payload}){ // paging sort search filter
         const response = yield call(categoryAPI.getListPagingSearchSortFilter, payload);
         yield put({type: GET_LIST_PSSF_CATEGORY_SUCCESS, payload: response.data || ''});
     } catch (error) {
-        const {message} = error.response.data;
-        notiError(message || 'ERROR')
         yield put({type: GET_LIST_PSSF_CATEGORY_FAILED, payload: error})
+        if(!error.response){
+            notiError('Network Error')
+        }else{
+            const {message} = error.response.data;
+            notiError(message || 'ERROR')
+        }
     }
 }
 
@@ -47,9 +51,13 @@ function* deleteCategory({payload}){
         yield put({type: DELETE_CATEGORY_SUCCESS, payload: resGet.data || ''})
         notiSuccess(`Xoá thành công`);
     } catch (error) {
-        const {message} = error.response.data;
-        notiError(message || 'ERROR')
         yield put({type: DELETE_CATEGORY_FAILED, payload: error})
+        if(!error.response){
+            notiError('Network Error')
+        }else{
+            const {message} = error.response.data;
+            notiError(message || 'ERROR')
+        }
     }
 }
 
@@ -74,22 +82,26 @@ function* createCategory({payload, setModal}){
             current.resetForm();
         },200);
     } catch (err) {
-        const {code, error, message} = err.response.data;
         yield put({type: CREATE_CATEGORY_FAILED, payload: err})
-        switch(code){
-            case ERR_BAD_PARAMS:
-                current.setErrors({
-                    ...error
-                })
-                break;
-            case ErrCategoryCode.ERR_CATEGORY_NAME_ALREADY_EXISTS:
-                current.setErrors({
-                    name: message
-                })
-                break;
-            default:
-                notiError(getMessage(ERROR))
-                break
+        if(!err.response){
+            notiError('Network Error')
+        }else{
+            const {code, error, message} = err.response.data;
+            switch(code){
+                case ERR_BAD_PARAMS:
+                    current.setErrors({
+                        ...error
+                    })
+                    break;
+                case ErrCategoryCode.ERR_CATEGORY_NAME_ALREADY_EXISTS:
+                    current.setErrors({
+                        name: message
+                    })
+                    break;
+                default:
+                    notiError(getMessage(ERROR))
+                    break
+            }
         }
     }
 }
@@ -115,22 +127,26 @@ function* updateCategory({payload, setModal}){
             current.resetForm();
         },200);
     } catch (err) {
-        const {code, error, message} = err.response.data;
         yield put({type: UPDATE_CATEGORY_FAILED, payload: err})
-        switch(code){
-            case ERR_BAD_PARAMS:
-                current.setErrors({
-                    ...error
-                })
-                break;
-            case ErrCategoryCode.ERR_CATEGORY_NAME_ALREADY_EXISTS:
-                current.setErrors({
-                    name: message
-                })
-                break;
-            default:
-                notiError(getMessage(ERROR))
-                break;
+        if(!err.response){
+            notiError('Network Error')
+        }else{
+            const {code, error, message} = err.response.data;
+            switch(code){
+                case ERR_BAD_PARAMS:
+                    current.setErrors({
+                        ...error
+                    })
+                    break;
+                case ErrCategoryCode.ERR_CATEGORY_NAME_ALREADY_EXISTS:
+                    current.setErrors({
+                        name: message
+                    })
+                    break;
+                default:
+                    notiError(getMessage(ERROR))
+                    break;
+            }
         }
     }
 }

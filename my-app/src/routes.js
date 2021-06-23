@@ -9,6 +9,7 @@ import BrandList from "views/Brand/BrandList"
 import CategoryList from 'views/Category/CategoryList'
 import SupplierList from 'views/Supplier/SupplierList'
 import ProductList from 'views/Product/ProductList'
+import GoodsReceiptList from 'views/Goods-Receipt/GoodsReceiptList'
 
 var routes = [
   {
@@ -16,6 +17,12 @@ var routes = [
     name: "Dashboard",
     icon: "tim-icons icon-chart-pie-36",
     component: Dashboard,
+    layout: "/admin",
+  },{
+    path: "/goods-receipt",
+    name: "Nhập hàng",
+    icon: "tim-icons icon-cloud-upload-94",
+    component: GoodsReceiptList,
     layout: "/admin",
   },{
     path: "/icons",
@@ -26,7 +33,7 @@ var routes = [
   },{
     path: "/brands",
     name: "Danh sách nhãn hiệu",
-    icon: "tim-icons icon-puzzle-10",
+    icon: "tim-icons icon-book-bookmark",
     component: BrandList,
     layout: "/admin",
   },{
@@ -38,13 +45,13 @@ var routes = [
   },{
     path: "/suppliers",
     name: "Danh sách nhà cung cấp",
-    icon: "tim-icons icon-puzzle-10",
+    icon: "tim-icons icon-delivery-fast",
     component: SupplierList,
     layout: "/admin",
   },{
     path: "/products",
     name: "Danh sách sản phẩm",
-    icon: "tim-icons icon-puzzle-10",
+    icon: "tim-icons icon-app",
     component: ProductList,
     layout: "/admin",
   },{

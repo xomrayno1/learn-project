@@ -33,9 +33,13 @@ function* getSupplierPSSFilter({ payload }) { // paging sort search filter
         const response = yield call(supplierAPI.getListPagingSearchSortFilter, payload);
         yield put({ type: GET_LIST_PSSF_SUPPLIER_SUCCESS, payload: response.data || '' });
     } catch (error) {
-        const { message } = error.response.data;
-        notiError(message || 'ERROR')
         yield put({ type: GET_LIST_PSSF_SUPPLIER_FAILED, payload: error })
+        if(!error.response){
+            notiError('Network Error')
+        }else{
+            const { message } = error.response.data;
+            notiError(message || 'ERROR')
+        }
     }
 }
 
@@ -53,9 +57,13 @@ function* deleteSupplier({ payload }) {
         yield put({ type: DELETE_SUPPLIER_SUCCESS, payload: resGet.data || '' })
         notiSuccess(`Xoá thành công`);
     } catch (error) {
-        const { message } = error.response.data;
-        notiError(message || 'ERROR')
         yield put({ type: DELETE_SUPPLIER_FAILED, payload: error })
+        if(!error.response){
+            notiError('Network Error')
+        }else{
+            const { message } = error.response.data;
+            notiError(message || 'ERROR')
+        }
     }
 }
 
@@ -80,22 +88,26 @@ function* createSupplier({ payload, setModal }) {
             current.resetForm();
         }, 200);
     } catch (err) {
-        const { code, error, message } = err.response.data;
         yield put({ type: CREATE_SUPPLIER_FAILED, payload: err })
-        switch (code) {
-            case ERR_BAD_PARAMS:
-                current.setErrors({
-                    ...error
-                })
-                break;
-            case ErrSupplierCode.ERR_SUPPLIER_NAME_ALREADY_EXISTS:
-                current.setErrors({
-                    name: message
-                })
-                break;
-            default:
-                notiError(getMessage(ERROR))
-                break
+        if(!err.response){
+            notiError('Network Error')
+        }else{
+            const { code, error, message } = err.response.data;
+            switch (code) {
+                case ERR_BAD_PARAMS:
+                    current.setErrors({
+                        ...error
+                    })
+                    break;
+                case ErrSupplierCode.ERR_SUPPLIER_NAME_ALREADY_EXISTS:
+                    current.setErrors({
+                        name: message
+                    })
+                    break;
+                default:
+                    notiError(getMessage(ERROR))
+                    break
+            }    
         }
     }
 }
@@ -121,27 +133,31 @@ function* updateSupplier({ payload, setModal }) {
             current.resetForm();
         }, 200);
     } catch (err) {
-        const { code, error, message } = err.response.data;
         yield put({ type: UPDATE_SUPPLIER_FAILED, payload: err })
-        switch (code) {
-            case ERR_BAD_PARAMS:
-                current.setErrors({
-                    ...error
-                })
-                break;
-            case ErrSupplierCode.ERR_SUPPLIER_NAME_ALREADY_EXISTS:
-                current.setErrors({
-                    name: message
-                })
-                break;
-            case ErrSupplierCode.ERR_SUPPLIER_EMAIL_INCORRECT_FORMAT:
-                current.setErrors({
-                    email: message
-                })
-                break;
-            default:
-                notiError(getMessage(ERROR))
-                break;
+        if(!err.response){
+            notiError('Network Error')
+        }else{
+            const { code, error, message } = err.response.data;
+            switch (code) {
+                case ERR_BAD_PARAMS:
+                    current.setErrors({
+                        ...error
+                    })
+                    break;
+                case ErrSupplierCode.ERR_SUPPLIER_NAME_ALREADY_EXISTS:
+                    current.setErrors({
+                        name: message
+                    })
+                    break;
+                case ErrSupplierCode.ERR_SUPPLIER_EMAIL_INCORRECT_FORMAT:
+                    current.setErrors({
+                        email: message
+                    })
+                    break;
+                default:
+                    notiError(getMessage(ERROR))
+                    break;
+            }
         }
     }
 }

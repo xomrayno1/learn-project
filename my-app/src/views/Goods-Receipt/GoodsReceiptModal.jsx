@@ -14,7 +14,7 @@ import { CustomInputText, CustomTextArea, CustomSelect } from '../../variables/C
  
  
  
-function ProductModal({modal, formRef, setModal, categories, brands}) {
+function GoodsReceiptModal({modal, formRef, setModal, categories, brands}) {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
      
@@ -175,4 +175,4 @@ function ProductModal({modal, formRef, setModal, categories, brands}) {
     )
 }
 
-export default ProductModal;
+export default GoodsReceiptModal;

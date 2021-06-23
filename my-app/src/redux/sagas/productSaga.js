@@ -33,9 +33,13 @@ function* getProductPSSFilter({payload}){ // paging sort search filter
         const response = yield call(productAPI.getListPagingSearchSortFilter, payload);
         yield put({type: GET_LIST_PSSF_PRODUCT_SUCCESS, payload: response.data || ''});
     } catch (error) {
-        const {message} = error.response.data;
-        notiError(message || 'ERROR')
         yield put({type: GET_LIST_PSSF_PRODUCT_FAILED, payload: error})
+        if(!error.response){
+            notiError('Network Error')
+        }else{
+            const { message } = error.response.data;
+            notiError(message || 'ERROR')
+        }
     }
 }
 
@@ -53,9 +57,13 @@ function* deleteProduct({payload}){
         yield put({type: DELETE_PRODUCT_SUCCESS, payload: resGet.data || ''})
         notiSuccess(`Xoá thành công`);
     } catch (error) {
-        const {message} = error.response.data;
-        notiError(message || 'ERROR')
         yield put({type: DELETE_PRODUCT_FAILED, payload: error})
+        if(!error.response){
+            notiError('Network Error')
+        }else{
+            const { message } = error.response.data;
+            notiError(message || 'ERROR')
+        }
     }
 }
 
@@ -80,22 +88,26 @@ function* createProduct({payload, setModal}){
             current.resetForm();
         },200);
     } catch (err) {
-        const {code, error, message} = err.response.data;
         yield put({type: CREATE_PRODUCT_FAILED, payload: err})
-        switch(code){
-            case ERR_BAD_PARAMS:
-                current.setErrors({
-                    ...error
-                })
-                break;
-            case ErrProductCode.ERR_PRODUCT_NAME_ALREADY_EXISTS:
-                current.setErrors({
-                    name: message
-                })
-                break;
-            default:
-                notiError(getMessage(ERROR))
-                break
+        if(!err.response){
+            notiError('Network Error')
+        }else{
+            const {code, error, message} = err.response.data;
+            switch(code){
+                case ERR_BAD_PARAMS:
+                    current.setErrors({
+                        ...error
+                    })
+                    break;
+                case ErrProductCode.ERR_PRODUCT_CODE_ALREADY_EXISTS:
+                    current.setErrors({
+                        'code': message
+                    })
+                    break;
+                default:
+                    notiError(getMessage(ERROR))
+                    break;
+            }
         }
     }
 }
@@ -121,22 +133,26 @@ function* updateProduct({payload, setModal}){
             current.resetForm();
         },200);
     } catch (err) {
-        const {code, error, message} = err.response.data;
         yield put({type: UPDATE_PRODUCT_FAILED, payload: err})
-        switch(code){
-            case ERR_BAD_PARAMS:
-                current.setErrors({
-                    ...error
-                })
-                break;
-            case ErrProductCode.ERR_PRODUCT_NAME_ALREADY_EXISTS:
-                current.setErrors({
-                    name: message
-                })
-                break;
-            default:
-                notiError(getMessage(ERROR))
-                break;
+        if(!err.response){
+            notiError('Network Error')
+        }else{
+            const {code, error, message} = err.response.data;
+            switch(code){
+                case ERR_BAD_PARAMS:
+                    current.setErrors({
+                        ...error
+                    })
+                    break;
+                case ErrProductCode.ERR_PRODUCT_CODE_ALREADY_EXISTS:
+                    current.setErrors({
+                        'code': message
+                    })
+                    break;
+                default:
+                    notiError(getMessage(ERROR))
+                    break;
+            }
         }
     }
 }

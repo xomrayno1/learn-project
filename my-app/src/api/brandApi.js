@@ -9,10 +9,10 @@ import {
 
 const brandAPI = {
     getListPagingSearchSortFilter: (params) =>{
-        return axiosClient.post(BRAND_API_GET_LIST_PSSF, params)
+        return axiosClient.post(BRAND_API_GET_LIST_PSSF, params);
     },
     deleteBrand: (params) =>{
-        return axiosClient.post(BRAND_API_DELETE, params)
+        return axiosClient.post(BRAND_API_DELETE, params);
     },
     updateBrand: (params) => {
         return axiosClient.put(BRAND_API_UPDATE, params);

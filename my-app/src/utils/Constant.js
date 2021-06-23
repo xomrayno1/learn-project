@@ -150,6 +150,7 @@ export const ERR_BAD_PARAMS = 406;
 export const INVALID_PARAMETER = 407;
 
 //code err product
+
 export const ErrProductCode = {
     ERR_PRODUCT_LIST_IS_EMPTY: 116,
     ERR_PRODUCT_ID_NOT_EXIST: 117,
