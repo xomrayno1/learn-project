@@ -26,6 +26,8 @@ import {
 } from 'antd'
 import {useDispatch, useSelector} from 'react-redux'
 
+import brandAPI from '../../api/brandApi'
+import categoryAPI from '../../api/categoryApi'
 import ProductModal from '../Product/ProductModal'
 import {confirm, warning} from '../../utils/AppUtils'
 import {
@@ -41,12 +43,36 @@ function ListProduct(props) {
     "sortCase" : 1,
     "ascSort": true,
     "pageNumber": 1,
-    "pageSize": 5
+    "pageSize": 5,
+    "categoryId": "",
+    "brandId": ""
   });
+
+  const [search, setSearch] = useState({
+    "categoryId": "",
+    "brandId": "",
+    "searchKey": ""
+  })
+
+  const [categories, setCategory] = useState('');
+  const [brands, setBrands] = useState('');
 
   useEffect(()=>{
     dispatch(getListPSSFProduct({...filter}));
   },[filter])
+
+  const getBrand = async () => {
+    const {data} = await brandAPI.getListActive();
+    setBrands(data);
+  }
+  const getCategory = async () => {
+      const {data} = await categoryAPI.getListActive();
+      setCategory(data);
+  }
+  useEffect(async ()=>{
+      await getBrand();
+      await getCategory();
+  },[])
 
   const onHandlePagination = (page) => {
     setFilter({
@@ -76,6 +102,9 @@ function ListProduct(props) {
       title : 'Code',
       dataIndex: 'code',
     },{
+      title : 'Giá tiền',
+      dataIndex: 'price',
+    },{
       title : 'Cân nặng',
       dataIndex: 'weight',
     },{
@@ -87,11 +116,11 @@ function ListProduct(props) {
     },{
       title : 'Ngày tạo',
       dataIndex: 'create_date',
-      responsive: ['sm'],
+      responsive: ['sm','md'],
     },{
       title : 'Ngày cập nhật',
       dataIndex: 'update_date',
-      responsive: ['sm'],
+      responsive: ['sm','md'],
     },{
       title :  ' + ',
       render : (_, record) => {
@@ -105,7 +134,8 @@ function ListProduct(props) {
               >Cập nhật</Button>
           </Space>
         </>
-      }
+      },
+      responsive: ['sm','lg'],
     }
   ]
  
@@ -147,7 +177,8 @@ function ListProduct(props) {
   const onHandleSearch = () => {
     setFilter({
       ...filter,
-      searchKey: searchRef.current.state.value,
+      ...search,
+      searchKey: searchRef.current.state.value,      
       pageNumber: 1
     })
   }
@@ -165,7 +196,20 @@ function ListProduct(props) {
       sortCase: Number(value)
     })
   }
+  
+  const onHandleChangeCategory = (value) => {
+    setSearch({
+      ...search,
+      "categoryId": value
+    })
+  }
 
+  const onHandleChangeBrand = (value) => {
+    setSearch({
+      ...search,
+      "brandId": value
+    })
+  }
     return (
         <>
           <div className="content">
@@ -193,12 +237,13 @@ function ListProduct(props) {
                             >Xoá</Button>  
                         </Space>
                       </Col>
+ 
                     </Row>
                     <Divider/>
                     <Row>
-                      <Col md="6" sm="6">
+                      <Col md="4" sm="4">
                           <Space>
-                            <Select 
+                            <Select
                                 defaultValue='asc' 
                                 onChange={onHandleChangeSortAsc}>
                               <Select.Option value="asc">Tăng dần</Select.Option>
@@ -207,26 +252,42 @@ function ListProduct(props) {
                             <Select 
                                 defaultValue='1'
                                 onChange={onHandleChangeSortKey}>
-                              <Select.Option value="1">Sắp xếp theo Id</Select.Option>
-                              <Select.Option value="2">Sắp xếp theo Tên</Select.Option>
+                              <Select.Option value="1">Sắp xếp theo id</Select.Option>
+                              <Select.Option value="2">Sắp xếp theo tên</Select.Option>
+                              <Select.Option value="3">Sắp xếp theo code</Select.Option>
+                              <Select.Option value="4">Sắp xếp theo nhãn hiệu</Select.Option>
+                              <Select.Option value="5">Sắp xếp theo danh mục</Select.Option>
+                              <Select.Option value="6">Sắp xếp theo giá</Select.Option>
                             </Select>
                           </Space>
                       </Col>
-                      <Col md="4" sm="4">
-                        <Input 
-                          ref={searchRef}
-                          onPressEnter={onHandleSearch} 
-                          placeholder="Nhập tên để tìm kiếm..." />
+                      <Col md="8" sm="8">
+                        <Space>
+                            <Select defaultValue='' onChange={onHandleChangeCategory}   >
+                              <Select.Option  value=''>Chọn danh mục</Select.Option>
+                              {
+                                categories && categories.map(item => <Select.Option value={item.id}>{item.name}</Select.Option>)
+                              }                           
+                            </Select>
+                            <Select defaultValue='' onChange={onHandleChangeBrand}   >
+                              <Select.Option  value=''>Chọn nhãn hiệu</Select.Option>
+                              {
+                                brands && brands.map(item => <Select.Option value={item.id}>{item.name}</Select.Option>)
+                              }                           
+                            </Select>
+                          <Input
+                            
+                            ref={searchRef}
+                            onPressEnter={onHandleSearch} 
+                            placeholder="Nhập tên hoặc code để tìm kiếm..." />
+                          <Button
+                            type="primary"
+                            onClick={onHandleSearch}
+                            icon={<SearchOutlined />}            
+                            >Tìm kiếm</Button>
+                        </Space>
                       </Col>
-                      <Col md="2" sm="2" style={{
-                        padding: '0 0 0 0'
-                      }}>
-                        <Button
-                          type="primary"
-                          onClick={onHandleSearch}
-                          icon={<SearchOutlined />}            
-                          >Tìm kiếm</Button>
-                      </Col>
+                    
                     </Row>
                     <Divider/>
                     
@@ -257,6 +318,8 @@ function ListProduct(props) {
               modal={modal} 
               formRef={formRef} 
               setModal={setModal}
+              categories={categories}
+              brands={brands}
             />
 
             </Row>

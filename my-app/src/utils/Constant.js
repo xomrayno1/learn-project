@@ -113,6 +113,7 @@ export const BRAND_API_GET_LIST_PSSF = BRAND_API + '/brand_get_list_paging_sort_
 export const BRAND_API_DELETE = BRAND_API + '/brand_delete'
 export const BRAND_API_CREATE = BRAND_API + '/brand_create'
 export const BRAND_API_UPDATE = BRAND_API + '/brand_update'
+export const BRAND_API_GET_LIST_ACTIVE = BRAND_API + '/brand_get_list_active'
 
 //CATEGORY API
 export const CATEGORY_API = SEVER_PORT + MANAGE_SERVICE + API_PREFIX + '/categories';
@@ -120,6 +121,7 @@ export const CATEGORY_API_GET_LIST_PSSF = CATEGORY_API + '/category_get_list_pag
 export const CATEGORY_API_DELETE = CATEGORY_API + '/category_delete'
 export const CATEGORY_API_CREATE = CATEGORY_API + '/category_create'
 export const CATEGORY_API_UPDATE = CATEGORY_API + '/category_update'
+export const CATEGORY_API_GET_LIST_ACTIVE = CATEGORY_API + '/category_get_list_active'
 
 //PRODUCT API
 export const PRODUCT_API = SEVER_PORT + MANAGE_SERVICE + API_PREFIX + '/products';
@@ -127,6 +129,7 @@ export const PRODUCT_API_GET_LIST_PSSF = PRODUCT_API + '/product_get_list_paging
 export const PRODUCT_API_DELETE = PRODUCT_API + '/product_delete'
 export const PRODUCT_API_CREATE = PRODUCT_API + '/product_create'
 export const PRODUCT_API_UPDATE = PRODUCT_API + '/product_update'
+export const PRODUCT_API_GET_LIST_ACTIVE = PRODUCT_API + '/product_get_list_active'
 
 //SUPPLIER API
 export const SUPPLIER_API = SEVER_PORT + MANAGE_SERVICE + API_PREFIX + '/suppliers';
@@ -134,6 +137,7 @@ export const SUPPLIER_API_GET_LIST_PSSF = SUPPLIER_API + '/supplier_get_list_pag
 export const SUPPLIER_API_DELETE = SUPPLIER_API + '/supplier_delete'
 export const SUPPLIER_API_CREATE = SUPPLIER_API + '/supplier_create'
 export const SUPPLIER_API_UPDATE = SUPPLIER_API + '/supplier_update'
+export const SUPPLIER_API_GET_LIST_ACTIVE = SUPPLIER_API + '/supplier_get_list_active'
 
 //define code status error
 export const OK = 200;

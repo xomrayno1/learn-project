@@ -2,20 +2,22 @@ import {Form, Field, ErrorMessage, Formik, withFormik } from 'formik'
 import {Button, Modal, Space, Select} from 'antd'
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup'
-
+import { useEffect, useState } from 'react';
 import {
     Row,
     Col,
     Label
   } from "reactstrap";
+
 import {createProduct, updateProduct} from '../../redux/action/productAction'
 import { CustomInputText, CustomTextArea, CustomSelect } from '../../variables/CustomInput'
-import { useState } from 'react';
  
  
-function ProductModal({modal, formRef, setModal}) {
+ 
+function ProductModal({modal, formRef, setModal, categories, brands}) {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
+     
      
     const productSchema = Yup.object({
         name: Yup.string().required("Không được để trống tên !"),
@@ -33,34 +35,28 @@ function ProductModal({modal, formRef, setModal}) {
         })
         formRef.current.resetForm();
     }
+   
 
     const onHandleSave = (data) => {
-        // const wait = new Promise((resolve, reject) => { 
-        //     setLoading(true);           
-        //     setTimeout(() => {
-        //         setLoading(false) 
-        //         resolve(null)
-        //     }, 2000)   
-        // })
+        const wait = new Promise((resolve, reject) => { 
+            setLoading(true);           
+            setTimeout(() => {
+                setLoading(false) 
+                resolve(null)
+            }, 2000)   
+        })
         
-        // wait.then(() => {
-        //     if(data['id']){
-        //         dispatch(updateProduct(formRef, setModal));  
-        //     }else{
-        //         dispatch(createProduct(formRef, setModal));  
-        //     }
-        // })
+        wait.then(() => {
+            if(data['id']){
+                dispatch(updateProduct(formRef, setModal));  
+            }else{
+                dispatch(createProduct(formRef, setModal));  
+            }
+        })
         console.log("data", data);
     }
   
-    const handleChangeBrand = (value) => {
-        console.log(value);
-        formRef.current.setValues({brandId: value})
-    }
-    const handleChangeCategory = (value) => {
-        console.log(value);
-        formRef.current.setValues({brandId: value})
-    }
+ 
     return (
         <Modal
             title={modal.title}
@@ -130,8 +126,11 @@ function ProductModal({modal, formRef, setModal}) {
                                 as={CustomSelect}  
                             >
                                 <option value="" disabled hidden>Chọn danh mục</option>
-                                <option value="1">Red</option>
-                                <option value="2">Black</option>
+                                {
+                                    categories && categories.map(item => {
+                                        return <option value={item.id}>{item.name}</option>
+                                    })
+                                }
                             </Field>
                         </Col>
                         <Col md="12">
@@ -147,8 +146,11 @@ function ProductModal({modal, formRef, setModal}) {
                                 className="select-custom-ant"
                             >
                                 <option style={{color: 'gray'}} value="" disabled hidden>Chọn thương hiệu</option>
-                                <option value="1">Red</option>
-                                <option value="2">Black</option>
+                                {
+                                    brands && brands.map(item => {
+                                        return <option value={item.id}>{item.name}</option>
+                                    })
+                                }
                             </Field>
                         </Col>
                         <Col md="12">
