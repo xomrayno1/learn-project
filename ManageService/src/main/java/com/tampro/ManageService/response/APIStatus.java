@@ -14,7 +14,7 @@ public enum APIStatus {
 	//notify message product
     ERR_PRODUCT_LIST_IS_EMPTY(116, "Danh sách sản phẩm trống."),//List of product is null
     ERR_PRODUCT_ID_NOT_EXIST(117, "Sản phẩm không tồn tại."),//Product not exists
-    ERR_PRODUCT_CODE_ALREADY_EXISTS(118, "Sản phẩm đã tồn tại."),//Product already exists
+    ERR_PRODUCT_CODE_ALREADY_EXISTS(118, "Code sản phẩm đã tồn tại."),//Product already exists
     ERR_CREATE_PRODUCT(119, "Không thể thêm sản phẩm."),//Can't create product
     ERR_UPDATE_PRODUCT(120, "Không thể cập nhật sản phẩm."),//Can't update product
 	//notify message category
