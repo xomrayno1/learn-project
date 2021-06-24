@@ -25,4 +25,6 @@
     list-style: none;
     font-variant: tabular-nums
  }
- 
+ .max-width {
+     width: 100%;
+ }

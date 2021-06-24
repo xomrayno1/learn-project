@@ -13,6 +13,7 @@ import {
   CardTitle,
   Row,
   Col,
+  Label
   } from "reactstrap";
 import {
   Table, 
@@ -22,13 +23,12 @@ import {
   Input, Spin, 
   Menu, 
   Dropdown, 
-  Select
+  Select,
+  DatePicker
 } from 'antd'
 import {useDispatch, useSelector} from 'react-redux'
+import {useHistory} from 'react-router-dom'
 
-import brandAPI from '../../api/brandApi'
-import categoryAPI from '../../api/categoryApi'
-import GoodsReceiptModal from '../Goods-Receipt/GoodsReceiptModal'
 import {confirm, warning} from '../../utils/AppUtils'
 import {
   getListPSSFProduct,
@@ -38,6 +38,8 @@ import {
 function GoodsReceiptList(props) {
   const dispatch = useDispatch();
   const {isLoading, products} = useSelector(state => state.product);
+  let history = useHistory();
+
   const [filter, setFilter] = useState({
     "searchKey" : "",
     "sortCase" : 1,
@@ -54,25 +56,10 @@ function GoodsReceiptList(props) {
     "searchKey": ""
   })
 
-  const [categories, setCategory] = useState('');
-  const [brands, setBrands] = useState('');
-
   useEffect(()=>{
     dispatch(getListPSSFProduct({...filter}));
   },[filter])
-
-  const getBrand = async () => {
-    const {data} = await brandAPI.getListActive();
-    setBrands(data);
-  }
-  const getCategory = async () => {
-      const {data} = await categoryAPI.getListActive();
-      setCategory(data);
-  }
-  useEffect(async ()=>{
-      await getBrand();
-      await getCategory();
-  },[])
+ 
 
   const onHandlePagination = (page) => {
     setFilter({
@@ -80,15 +67,11 @@ function GoodsReceiptList(props) {
       pageNumber: page
     })
   }
-
-  const formRef = useRef();
+ 
   const searchRef = useRef('');
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [modal, setModal] = useState({
-    visible: false, 
-    title: ''
-  });
+ 
    
   const columns = [
     {
@@ -151,24 +134,11 @@ function GoodsReceiptList(props) {
 
 
   const onCreate = () =>{
-    setModal({
-      ...modal,
-      visible: true,                        
-      title: 'Thêm sản phẩm'
-    })
+    history.push("/admin/goods-receipt/invoice");
   }
 
   const onUpdate = (data) =>{
-    setModal({
-      ...modal,
-      visible: true,
-      title: 'Cập nhật sản phẩm',
-    });
-    setTimeout(() => {
-      formRef.current.setValues({
-        ...data,
-      })
-    }, 200);
+ 
   }
 
   const onHandleDelete = () => {
@@ -200,19 +170,16 @@ function GoodsReceiptList(props) {
     })
   }
   
-  const onHandleChangeCategory = (value) => {
-    setSearch({
-      ...search,
-      "categoryId": value
-    })
+  const handleChangeDateFrom = (value, dateString) => {
+    console.log(value);
+    console.log(dateString);
   }
 
-  const onHandleChangeBrand = (value) => {
-    setSearch({
-      ...search,
-      "brandId": value
-    })
+  const handleChangeDateTo = (value, dateString) => {
+    console.log(value);
+    console.log(dateString);
   }
+
     return (
         <>
           <div className="content">
@@ -220,65 +187,58 @@ function GoodsReceiptList(props) {
               <Col md="12">
                 <Card>
                   <CardHeader>
-                    <CardTitle tag="h4">Đơn nhập hàng</CardTitle>
-                  </CardHeader>
-                  <CardBody>
                     <Row>
-                      <Col md="2" sm="2">
+                      <Col md="6"><CardTitle tag="h4">Đơn nhập hàng</CardTitle></Col>
+                      <Col md="6">
                         <Space>
                           <Button
                             type="primary"
                             icon={<PlusOutlined />}
                             onClick={onCreate}
-                            >Thêm</Button>
+                            >Tạo đơn nhập hàng</Button>
                           <Button 
                             type="danger"
                             icon={<DeleteOutlined/>}
                             onClick={() => selectedRowKeys.length == 0 
-                              ? warning("Vui lòng chọn mục để xoá !")
-                              : confirm("Bạn có chắc chắn muốn xoá không ?",onHandleDelete)}
-                            >Xoá</Button>  
-                        </Space>
+                            ? warning("Vui lòng chọn mục để xoá !")
+                            : confirm("Bạn có chắc chắn muốn xoá không ?",onHandleDelete)}
+                            >Xoá</Button> 
+                          </Space>
+                        </Col>
+                    </Row>
+                  </CardHeader>
+                  <CardBody>
+                    <Row>
+                      <Col md="12" sm="12">                         
+                            <Space>                  
+                              <Select
+                                  defaultValue='asc' 
+                                  onChange={onHandleChangeSortAsc}>
+                                <Select.Option value="asc">Tăng dần</Select.Option>
+                                <Select.Option value="desc">Giảm dần</Select.Option>
+                              </Select>
+                              <Select 
+                                  defaultValue='1'
+                                  onChange={onHandleChangeSortKey}>
+                                <Select.Option value="1">Sắp xếp theo id</Select.Option>
+                                <Select.Option value="2">Sắp xếp theo giá</Select.Option>
+                                <Select.Option value="3">Sắp xếp theo ngày xuất</Select.Option>
+                              </Select>
+                            </Space>
                       </Col>
- 
                     </Row>
                     <Divider/>
                     <Row>
-                      <Col md="4" sm="4">
-                          <Space>
-                            <Select
-                                defaultValue='asc' 
-                                onChange={onHandleChangeSortAsc}>
-                              <Select.Option value="asc">Tăng dần</Select.Option>
-                              <Select.Option value="desc">Giảm dần</Select.Option>
-                            </Select>
-                            <Select 
-                                defaultValue='1'
-                                onChange={onHandleChangeSortKey}>
-                              <Select.Option value="1">Sắp xếp theo id</Select.Option>
-                              <Select.Option value="2">Sắp xếp theo tên</Select.Option>
-                              <Select.Option value="3">Sắp xếp theo code</Select.Option>
-                              <Select.Option value="4">Sắp xếp theo nhãn hiệu</Select.Option>
-                              <Select.Option value="5">Sắp xếp theo danh mục</Select.Option>
-                              <Select.Option value="6">Sắp xếp theo giá</Select.Option>
-                            </Select>
-                          </Space>
-                      </Col>
-                      <Col md="8" sm="8">
+                      <Col md="6" sm="6">
                         <Space>
-                             
-                              <Select defaultValue='' onChange={onHandleChangeCategory}>
-                                <Select.Option  value=''>Chọn danh mục</Select.Option>
-                                {
-                                  categories && categories.map(item => <Select.Option value={item.id}>{item.name}</Select.Option>)
-                                }                           
-                              </Select>                                                     
-                              <Select defaultValue='' onChange={onHandleChangeBrand}   >
-                                <Select.Option  value=''>Chọn nhãn hiệu</Select.Option>
-                                {
-                                  brands && brands.map(item => <Select.Option value={item.id}>{item.name}</Select.Option>)
-                                }                           
-                              </Select>
+                              <Label>Từ ngày: </Label>
+                              <DatePicker placeholder="Từ ngày" format="DD-MM-YYYY"  onChange={handleChangeDateFrom}/>
+                              <Label>Đến ngày: </Label>
+                              <DatePicker placeholder="đến ngày" format="DD-MM-YYYY"  onChange={handleChangeDateTo}/>                                          
+                        </Space>
+                      </Col>
+                      <Col md="6" sm="6">
+                        <Space>                                          
                               <Input                             
                                 ref={searchRef}
                                 onPressEnter={onHandleSearch} 
@@ -292,7 +252,6 @@ function GoodsReceiptList(props) {
                               >Tìm kiếm</Button>
                         </Space>
                       </Col>
-                    
                     </Row>
                     <Divider/>
                     
@@ -318,14 +277,7 @@ function GoodsReceiptList(props) {
                 </Card>
               </Col>
 
-           {/*Modal form*/}
-            <GoodsReceiptModal 
-              modal={modal} 
-              formRef={formRef} 
-              setModal={setModal}
-              categories={categories}
-              brands={brands}
-            />
+
 
             </Row>
           </div>

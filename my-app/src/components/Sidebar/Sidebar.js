@@ -121,24 +121,29 @@ function Sidebar(props) {
             <Nav>
               {routes.map((prop, key) => {
                 if (prop.redirect) return null;
-                return (
-                  <li
-                    className={
-                      activeRoute(prop.path) + (prop.pro ? " active-pro" : "")
-                    }
-                    key={key}
-                  >
-                    <NavLink
-                      to={prop.layout + prop.path}
-                      className="nav-link"
-                      activeClassName="active"
-                      onClick={props.toggleSidebar}
+                if (prop.display){
+                  return (
+                    <li
+                      className={
+                        activeRoute(prop.path) + (prop.pro ? " active-pro" : "")
+                      }
+                      key={key}
                     >
-                      <i className={prop.icon} />
-                      <p>{rtlActive ? prop.rtlName : prop.name}</p>
-                    </NavLink>
-                  </li>
-                );
+                      <NavLink
+                        to={prop.layout + prop.path}
+                        className="nav-link"
+                        activeClassName="active"
+                        onClick={props.toggleSidebar}
+                      >
+                        <i className={prop.icon} />
+                        <p>{rtlActive ? prop.rtlName : prop.name}</p>
+                      </NavLink>
+                    </li>
+                  );
+                }else{
+                  return (<></>)
+                }
+                
               })}
               <li className="active-pro">
                 <ReactstrapNavLink href="https://www.creative-tim.com/product/black-dashboard-pro-react?ref=bdr-user-archive-sidebar-upgrade-pro">
