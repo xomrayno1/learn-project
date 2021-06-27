@@ -10,13 +10,13 @@ const supplierAPI = {
     getListPagingSearchSortFilter: (params) =>{
         return axiosClient.post(SUPPLIER_API_GET_LIST_PSSF, params)
     },
-    deleteSupplier: (params) =>{
+    createSupplier: (params) =>{
         return axiosClient.post(SUPPLIER_API_CREATE, params)
     },
     updateSupplier: (params) => {
         return axiosClient.put(SUPPLIER_API_UPDATE, params);
     },
-    createSupplier: (params) => {
+    deleteSupplier: (params) => {
         return axiosClient.post(SUPPLIER_API_DELETE, params);
     }
 }
