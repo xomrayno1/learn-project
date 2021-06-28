@@ -26,7 +26,7 @@ import {
     getListPSSFSupplier
 } from '../../redux/action/supplierAction'
 
-function SupplierSearch({ setModalSupplier}) {
+function SupplierSearch({ setModalSupplier, onSetInvoice}) {
     const [isEnableSupplier, setEnableSupplier] = useState(false)
     const dispatch = useDispatch();
 
@@ -47,10 +47,11 @@ function SupplierSearch({ setModalSupplier}) {
         dispatch(getListPSSFSupplier({...filterSupp}))
     }, [filterSupp])
 
-    const handleOnSelectSearchSupplier = (id) => {
-        console.log(` value : `, id);
-        if(id){
-           const object = suppliers.content.find(item => item.id == id);
+    const handleOnSelectSearchSupplier = (value, {key}) => {
+        console.log(` key : `, key);
+        if(key){
+           const object = suppliers.content.find(item => item.id === Number(key));
+           onSetInvoice({supplier_id: key});
            setSuplierInfo(object);
            setEnableSupplier(true);
         }else {
@@ -71,10 +72,16 @@ function SupplierSearch({ setModalSupplier}) {
 
     const onCloseSupplier = () => {
         setEnableSupplier(false);
+        setFilterSupp({
+            ...filterSupp,
+            searchKey: '',
+        })
+        onSetInvoice({supplier_id: ''})
     }
     
     const renderItemSupplier = (item) => ({
-        value: `${item.id}`,
+        value: `${item.name}`,
+        key: `${item.id}`,
         label: (
           <div
             style={{
@@ -145,9 +152,12 @@ function SupplierSearch({ setModalSupplier}) {
             <Row style={{
                 backgroundColor: 'white',
                 padding: '15px',
-                margin: '0px'
+                margin: '0px',
+                border: '1px solid'
             }}>
-                <Col md="6" sm="6">
+                <Row style={{
+                    padding: '10px 0px 0px 15px'
+                }}>
                     <Space>
                         <UserOutlined />
                         <Typography.Link style={{
@@ -155,17 +165,20 @@ function SupplierSearch({ setModalSupplier}) {
                         }} >{suplierInfo.name}</Typography.Link>
                         <a onClick={onCloseSupplier}><CloseOutlined /></a>
                     </Space>
-                </Col>
+                </Row>              
                 <Divider/>
-                <Col md="6" sm="6">
+                <Row style={{
+                    padding: '10px 0px 0px 15px'
+                }}>
                     <Descriptions title="Thông tin nhà cung cấp">
                         <Descriptions.Item span="2" label="Tên">{suplierInfo.name}</Descriptions.Item>
-                        <Descriptions.Item span="1" label="Điện thoại">{suplierInfo.phone}</Descriptions.Item>
+                        <Descriptions.Item span="2" label="Điện thoại">{suplierInfo.phone}</Descriptions.Item>
                         <Descriptions.Item span="2" label="Email">{suplierInfo.email}</Descriptions.Item>
                         <Descriptions.Item span="2" label="Địa chỉ">{suplierInfo.address}</Descriptions.Item>
                     </Descriptions>
-                </Col>
+                </Row>
             </Row>
+ 
         </CardBody>)
     );
 }

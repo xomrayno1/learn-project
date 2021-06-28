@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
     CardBody,
     Row,
@@ -19,23 +19,43 @@ import {
     CloseOutlined
 } from '@ant-design/icons'
 import { useHistory } from 'react-router-dom';
+import { getListPSSFProduct } from 'redux/action/productAction';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
     EditableCell,
     EditableRow
 } from './EditableCell'
+import { renderVND } from '../../utils/AppUtils'
 
-function ProductSearch({setModalProduct}) {
+
+function ProductSearch({setModalProduct, invoice, onHandleSaveInvoice}) {
     const { Text } = Typography;
     const [data, setData] = useState([]);
-    const history = useHistory();
+    const dispatch = useDispatch();
  
-    const [searchKeyProduct, setSearchKeyProduct] = useState('');
+    let {products} = useSelector(state => state.product);
+    !products && (products = {content: []}) // first render products is null
+
+   // const [searchKeyProduct, setSearchKeyProduct] = useState('');
+
+    const [filterPro, setFilterPro] = useState({
+        "searchKey" : "",
+        "sortCase" : 1,
+        "ascSort": true,
+        "pageNumber": 1,
+        "pageSize": 5
+    })
+    const searchRef = useRef('');
+
+    useEffect(() => {
+        dispatch(getListPSSFProduct({...filterPro}))
+    }, [filterPro])
 
     const columns = [
         {
             title: 'Mã SP',
-            dataIndex: 'id',
+            dataIndex: 'product_id',
             responsive: ['sm'],
         }, {
             title: 'Tên sản phẩm',
@@ -43,16 +63,25 @@ function ProductSearch({setModalProduct}) {
         }, {
             title: 'Cân nặng',
             dataIndex: 'weight',
+            render: (text) => {
+                return `${text} kg`
+            },
         },{
             title: 'Giá nhập',
             dataIndex: 'price',
+            render: (text) => {
+                return renderVND(text)
+            }
         },{
             title: 'Số lượng',
             dataIndex: 'count',
             editable: true
         },{
             title: 'Thành tiền',
-            dataIndex: 'totalPrice',
+            dataIndex: 'total_price',
+            render: (text) => {
+                return renderVND(text)
+            }
         }, {
             render: (_, record) => {
                 return <>
@@ -80,9 +109,17 @@ function ProductSearch({setModalProduct}) {
             })
         }
     })
+
+    const components = {
+        body: {
+          row: EditableRow,
+          cell: EditableCell,
+        },
+    };
  
     const renderItemProduct = (item) => ({
         value: `${item.name}`,
+        key: item.id,
         label: (
             <div
                 style={{
@@ -92,10 +129,10 @@ function ProductSearch({setModalProduct}) {
             >
                 <span><CodeSandboxOutlined /></span>
                 {item.name}
-                <span>{item.price}</span>
+                <span>{renderVND(item.price)}</span>
             </div>
         ),
-    });
+    })
 
     const optionsProduct = [
         {
@@ -118,30 +155,17 @@ function ProductSearch({setModalProduct}) {
                         </div>
                     ),
                 },
-                renderItemProduct({
-                    name: 'Product 1',
-                    price: 150
-                }),
-                renderItemProduct({
-                    name: 'Product 2',
-                    price: 250
-                }),
+                ...products.content.map(item => renderItemProduct(item))
             ],
         }
     ];
 
-    const handleOnSelectSearchProduct = (value) => {
-        console.log(` value : `, value);
-        if (value) {
-            setSearchKeyProduct('')
-            addItem({
-                id: Math.floor(Math.random() * 5),
-                weight: 10,
-                price: 100,
-                name: `${value}`,
-                count: 1,
-                totalPrice: 1000
-            })
+    const handleOnSelectSearchProduct = (value, {key}) => {
+        console.log('select', key);
+        if (key) {
+            const item = createItem(key);
+            // setSearchKeyProduct('')
+            addItem(item);
         } else {
             setModalProduct({
                 visible: true,
@@ -150,11 +174,31 @@ function ProductSearch({setModalProduct}) {
         }
     }
 
+    const handleOnChangeSearchProduct = (value) => { //?
+        //setSearchKeyProduct(value)
+        setFilterPro({...filterPro,searchKey: value});
+    }
+
+    const createItem = (id) => {
+        const pro = products.content.find(element => element.id === Number(id));
+        let item = {
+            id: 0,
+            name: pro.name,
+            weight: pro.weight,
+            price: pro.price,
+            count: 1,
+            total_price: pro.price,
+            product_id: pro.id
+        }
+        return item;
+    }
+
     const addItem = (item) => {
+        console.log('add item', item);
         if(data.length <= 0){
             setData([item])
         }else{
-            const idx = data.findIndex(element => element.id == item.id);
+            const idx = data.findIndex(element => element.product_id == item.product_id);
             let newData = [];
             newData  = idx == -1 ?  [...data, item] : [...data.slice(0)]
             setData(newData);
@@ -162,35 +206,40 @@ function ProductSearch({setModalProduct}) {
     }
 
     const removeItem = (item) => {
-        const idx = data.findIndex(element => element.id == item.id);
+        console.log('remove item', item);
+        const idx = data.findIndex(element => element.product_id == item.product_id);
         let newData = [];
         newData  = idx == -1 ? [...data.slice(0)] : [...data.slice(0, idx), ...data.slice(idx + 1)];
         setData(newData);
     }
 
     const updateItem = (item) => {
-        const idx = data.findIndex(element => element.id == item.id);
+        console.log('update item', item);
+        const idx = data.findIndex(element => element.product_id == item.product_id);
         let newData = [];
         newData  = idx == -1 ? [...data.slice(0)]
-                             : [...data.slice(0, idx),{...item, count: item.count, totalPrice: item.price * item.count}, ...data.slice(idx + 1)];
+                             : [...data.slice(0, idx),{...item, count: item.count, total_price: item.price * item.count}, ...data.slice(idx + 1)];
         setData(newData);
     }
 
-
-    const handleOnChangeSearchProduct = (value) => {
-        console.log(` value : `, value);
-        setSearchKeyProduct(value)
+    const onHandleSave = () => {
+        let price = data.map(item => item.total_price).reduce((total, element) => total + element );
+        let weight = data.map(item => item.weight * item.count).reduce((total, element) => total + element );
+        let count = data.map(item => Number(item.count)).reduce((total, element) => total + element );
+        let discount = 0;
+        const newInvoice = {
+            ...invoice,
+            count,
+            price,
+            weight,
+            discount, /// discount ?
+            total_price: price - discount, // subtract discount
+            invoice_details: [...data],
+        }
+        onHandleSaveInvoice(newInvoice)
     }
 
-    const components = {
-        body: {
-          row: EditableRow,
-          cell: EditableCell,
-        },
-    };
-
     return (
-
         <>
             <CardBody>
                 <h4>Thông tin sản phẩm</h4>
@@ -203,9 +252,11 @@ function ProductSearch({setModalProduct}) {
                     onChange={handleOnChangeSearchProduct}
                     backfill={true}
                     allowClear={true}
-                    value={searchKeyProduct}
+                   // value={searchKeyProduct}
+                    notFoundContent="Không có sản phẩm nào được tìm thấy"
                 >
                     <Input
+                        ref={searchRef}
                         prefix={<SearchOutlined />}
                         placeholder="Tìm kiếm sản phẩm theo tên, code ..." />
                 </AutoComplete>
@@ -223,54 +274,43 @@ function ProductSearch({setModalProduct}) {
                                     let total = 0;
                                     let totalCount = 0;
 
-                                    pageData.forEach(({ totalPrice, count }) => {
-                                        total += totalPrice;
+                                    pageData.forEach(({ total_price, count, weight}) => {
+                                        total += total_price;
                                         totalCount += Number(count);
                                     });
+                                
                                     return (
                                         <>
                                             <Table.Summary.Row>
-                                                <Table.Summary.Cell colSpan={3} />
-                                                <Table.Summary.Cell >Số lượng</Table.Summary.Cell>
-                                                <Table.Summary.Cell>
-                                                    {/* <Text type="danger">{totalBorrow}</Text> */}
-                                                </Table.Summary.Cell>
+                                                <Table.Summary.Cell colSpan="4" />
+                                                <Table.Summary.Cell>Số lượng</Table.Summary.Cell>         
                                                 <Table.Summary.Cell>
                                                     <Text>{totalCount}</Text>
                                                 </Table.Summary.Cell>
                                             </Table.Summary.Row>
                                             <Table.Summary.Row>
-                                                <Table.Summary.Cell colSpan={3} />
-                                                <Table.Summary.Cell colSpan>Tổng tiền</Table.Summary.Cell>
-                                                <Table.Summary.Cell  >
-                                                    {/* <Text type="danger">{totalBorrow - totalRepayment}</Text> */}
+                                                <Table.Summary.Cell colSpan="4" />
+                                                <Table.Summary.Cell>Tổng tiền</Table.Summary.Cell>                 
+                                                <Table.Summary.Cell>
+                                                    <Text  >{renderVND(total)}</Text>
                                                 </Table.Summary.Cell>
+                                            </Table.Summary.Row>
+                                            <Table.Summary.Row >
+                                                <Table.Summary.Cell colSpan="4"/>
+                                                <Table.Summary.Cell >Giảm giá</Table.Summary.Cell>
                                                 <Table.Summary.Cell  >
-                                                    <Text  >{total}</Text>
+                                                    <Text  >0 đ</Text>
                                                 </Table.Summary.Cell>
                                             </Table.Summary.Row>
                                             <Table.Summary.Row>
-                                                <Table.Summary.Cell colSpan={3} />
-                                                <Table.Summary.Cell colSpan>Giảm giá</Table.Summary.Cell>
-                                                <Table.Summary.Cell  >
-                                                    {/* <Text type="danger">{totalBorrow - totalRepayment}</Text> */}
-                                                </Table.Summary.Cell>
-                                                <Table.Summary.Cell  >
-                                                    <Text  >0</Text>
-                                                </Table.Summary.Cell>
-                                            </Table.Summary.Row>
-                                            <Table.Summary.Row>
-                                                <Table.Summary.Cell colSpan={3} />
-                                                <Table.Summary.Cell colSpan>
+                                                <Table.Summary.Cell colSpan="4"/>
+                                                <Table.Summary.Cell>
                                                     <Text style={{
                                                         fontWeight: 'bold'
                                                     }}>Tiền cần trả</Text>
                                                 </Table.Summary.Cell>
                                                 <Table.Summary.Cell  >
-                                                    {/* <Text type="danger">{totalBorrow - totalRepayment}</Text> */}
-                                                </Table.Summary.Cell>
-                                                <Table.Summary.Cell  >
-                                                    <Text type="danger" >{total}</Text>
+                                                    <Text type="danger" >{renderVND(total)}</Text>
                                                 </Table.Summary.Cell>
                                             </Table.Summary.Row>
                                         </>
@@ -285,7 +325,7 @@ function ProductSearch({setModalProduct}) {
                     <Col md="6" sm="6"></Col>
                     <Col md="6" sm="6">
                         <Space>
-                            <Button key="save" type="primary">Lưu</Button>
+                            <Button key="save" type="primary" onClick={onHandleSave}>Lưu</Button>
                             <Button key="back">Quay lại</Button>
                         </Space>
                     </Col>

@@ -32,3 +32,9 @@ export const notiSuccess=  (text) => {
     placement: 'topRight'
   });
 }
+
+
+export const renderVND  = (number) => {
+  //return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number)
+  return number.toLocaleString('vi', {style : 'currency', currency : 'VND'});
+}

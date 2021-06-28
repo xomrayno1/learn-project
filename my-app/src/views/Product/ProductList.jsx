@@ -34,6 +34,7 @@ import {
   getListPSSFProduct,
   deleteProduct
 } from '../../redux/action/productAction'
+import { renderVND } from '../../utils/AppUtils'
 
 function ListProduct(props) {
   const dispatch = useDispatch();
@@ -104,9 +105,15 @@ function ListProduct(props) {
     },{
       title : 'Giá tiền',
       dataIndex: 'price',
+      render : (text) => {
+        return renderVND(text)
+      } 
     },{
       title : 'Cân nặng',
       dataIndex: 'weight',
+      render : (text) => {
+        return `${text} kg`
+      } 
     },{
       title : 'Thương hiệu',
       dataIndex: 'brand_name',

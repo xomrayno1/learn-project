@@ -31,33 +31,33 @@ import {useHistory} from 'react-router-dom'
 
 import {confirm, warning} from '../../utils/AppUtils'
 import {
-  getListPSSFProduct,
-  deleteProduct
-} from '../../redux/action/productAction'
+  getListPSSFGoodsReceipt,
+  deleteGoodsReceipt
+} from '../../redux/action/goodsReceiptAction'
 
 function GoodsReceiptList(props) {
   const dispatch = useDispatch();
-  const {isLoading, products} = useSelector(state => state.product);
+  const {isLoading, goodsReceipts} = useSelector(state => state.goodsReceipt);
   let history = useHistory();
 
   const [filter, setFilter] = useState({
-    "searchKey" : "",
     "sortCase" : 1,
     "ascSort": true,
     "pageNumber": 1,
     "pageSize": 5,
-    "categoryId": "",
-    "brandId": ""
+    "fromDate": "",
+    "toDate": "",
+    "dateExport": ""
   });
 
   const [search, setSearch] = useState({
-    "categoryId": "",
-    "brandId": "",
-    "searchKey": ""
+    "fromDate": "",
+    "toDate": "",
+    "dateExport": ""
   })
 
   useEffect(()=>{
-    dispatch(getListPSSFProduct({...filter}));
+    dispatch(getListPSSFGoodsReceipt({...filter}));
   },[filter])
  
 
@@ -92,13 +92,13 @@ function GoodsReceiptList(props) {
       dataIndex: 'discount',
     },{
       title : 'Tổng tiền',
-      dataIndex: 'totalPrice',
+      dataIndex: 'total_price',
     },{
       title : 'Nhà cung cấp',
       dataIndex: 'supplier_name',
     },{
       title : 'Ngày xuất hoá đơn',
-      dataIndex: 'dateExport',
+      dataIndex: 'date_export',
     },{
       title : 'Ngày tạo',
       dataIndex: 'create_date',
@@ -132,7 +132,6 @@ function GoodsReceiptList(props) {
     },
   }
 
-
   const onCreate = () =>{
     history.push("/admin/goods-receipt/invoice");
   }
@@ -143,7 +142,7 @@ function GoodsReceiptList(props) {
 
   const onHandleDelete = () => {
     console.log("delete", selectedRowKeys);
-    dispatch(deleteProduct(selectedRowKeys));
+    dispatch(deleteGoodsReceipt(selectedRowKeys));
     setSelectedRowKeys([]);
   }
   
@@ -261,7 +260,7 @@ function GoodsReceiptList(props) {
                           <Table
                             columns={columns} 
                             rowSelection={rowSelection}
-                            // dataSource={products.content || []}
+                             dataSource={goodsReceipts.content || []}
                             // pagination= {{
                             //   pageSize: products.pageable && products.pageable.pageSize || 10,
                             //   current: products.pageable && products.pageable.pageNumber + 1,
@@ -276,9 +275,6 @@ function GoodsReceiptList(props) {
                   </CardBody>
                 </Card>
               </Col>
-
-
-
             </Row>
           </div>
         </>

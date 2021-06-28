@@ -13,7 +13,8 @@ import {
 } from '@ant-design/icons';
 import "../style/style.css"
 import { 
-    PageHeader 
+    PageHeader,
+    DatePicker
 } from 'antd'
 import {useHistory} from 'react-router-dom'
 import _ from 'lodash'
@@ -22,13 +23,12 @@ import SupplierSearch from '../Goods-Receipt/SupplierSearch'
 import SupplierModal from '../Supplier/SupplierModal'
 import ProductModal from '../Product/ProductModal'
 import ProductSearch from "./ProductSearch";
- 
 
 function GoodsReceiptForm() {
-  
-   
     const history = useHistory();
  
+    const formRef = useRef();
+
     const [modalSupplier, setModalSupplier] = useState({
         visible: false,
         title: ''
@@ -38,8 +38,40 @@ function GoodsReceiptForm() {
         title: ''
     })
 
-    const formRef = useRef();
+    const [invoice, setInvoice] = useState({
+        price: 0,
+        discount: 0,
+        count: 0,
+        weight: 0,
+        total_price: 0,
+        date_export: '',
+        supplier_id: 0,
+        invoice_details: []
+    })
+
+    const onSetInvoice = (item) => {
+        setInvoice({
+            ...invoice,
+            ...item
+        })
+    }
+
+    const onHandleSaveInvoice = async (item) => {
+        const newInvoice = {
+            ...invoice,
+            ...item
+        }
+        setInvoice({
+            ...newInvoice
+        })
+        //save invoice
+        console.log(newInvoice);
+    }
  
+    const onHandleChangeDateExport = (date, dateString) =>{
+        onSetInvoice({date_export: dateString});
+    }
+
     return (
         <>
             <div className="content">
@@ -59,13 +91,28 @@ function GoodsReceiptForm() {
                             </CardHeader>
                             <CardBody>
                                 <Card>
-                                    <SupplierSearch setModalSupplier={setModalSupplier}/>
-                                    <ProductSearch setModalProduct={setModalProduct}/>
+                                    <CardHeader>
+                                        <CardTitle tag="h4">Ngày hoá đơn xuất</CardTitle>
+                                        <CardBody>
+                                            <Row>
+                                                <DatePicker
+                                                    onChange={onHandleChangeDateExport}
+                                                    placeholder="Chọn ngày hoá đơn xuất"  
+                                                    format='DD-MM-YYYY'
+                                                    style={{
+                                                        width: '500px'
+                                                    }}
+                                                />
+                                            </Row>
+                                        </CardBody>
+                                    </CardHeader>
+                                    <SupplierSearch onSetInvoice={onSetInvoice} setModalSupplier={setModalSupplier}/>
+                                    <ProductSearch invoice={invoice} onHandleSaveInvoice={onHandleSaveInvoice} setModalProduct={setModalProduct}/>
                                 </Card>
                             </CardBody>
                         </Card>
                     </Col>
-                    <SupplierModal modal={modalSupplier} formRef={formRef} setModal={setModalSupplier}  />
+                    <SupplierModal modal={modalSupplier} formRef={formRef} setModal={setModalSupplier}/>
                     <ProductModal modal={modalProduct} formRef={formRef} setModal={setModalProduct}/>
                 </Row>
             </div>
