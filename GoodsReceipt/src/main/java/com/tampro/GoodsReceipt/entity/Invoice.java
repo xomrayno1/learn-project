@@ -16,6 +16,9 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,6 +51,7 @@ public class Invoice extends BaseEntity{
 	@Column(name = "supplier_id", nullable = false)
 	private long supplierId;
 	@OneToMany(mappedBy = "invoice", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
+	@JsonIgnore
 	private List<InvoiceDetail> invoiceDetails;
 	
 

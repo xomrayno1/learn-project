@@ -2,6 +2,7 @@ package com.tampro.ManageService.model.response;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -30,8 +31,10 @@ public class ProductResponse {
 	@JsonProperty("active_flag")
 	private int activeFlag;
 	@JsonProperty("create_date")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private Date createDate;
 	@JsonProperty("update_date")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private Date updateDate;
 
 	

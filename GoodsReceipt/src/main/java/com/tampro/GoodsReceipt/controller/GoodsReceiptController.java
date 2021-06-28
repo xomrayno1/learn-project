@@ -1,8 +1,6 @@
 package com.tampro.GoodsReceipt.controller;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,8 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,12 +24,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tampro.GoodsReceipt.entity.Invoice;
 import com.tampro.GoodsReceipt.entity.InvoiceDetail;
 import com.tampro.GoodsReceipt.exception.ApplicationException;
 import com.tampro.GoodsReceipt.model.InvoiceDetailModel;
+import com.tampro.GoodsReceipt.model.ProductModel;
+import com.tampro.GoodsReceipt.model.SupplierModel;
 import com.tampro.GoodsReceipt.model.request.CreateInvoiceRequest;
+import com.tampro.GoodsReceipt.model.request.InvoicePagingSearchModel;
 import com.tampro.GoodsReceipt.model.request.UpdateInvoiceRequest;
+import com.tampro.GoodsReceipt.model.response.InvoiceResponse;
+import com.tampro.GoodsReceipt.model.response.ModelResponse;
 import com.tampro.GoodsReceipt.response.APIResponse;
 import com.tampro.GoodsReceipt.response.APIStatus;
 import com.tampro.GoodsReceipt.service.InvoiceService;
@@ -40,6 +48,7 @@ import com.tampro.GoodsReceipt.utils.ResponseUtil;
 
 @RestController
 @RequestMapping(Constant.GOODS_RECEIPT_API)
+@CrossOrigin(Constant.CROSS_ORIGIN)
 public class GoodsReceiptController {
 
 	
@@ -63,6 +72,48 @@ public class GoodsReceiptController {
 	
 	//"MKH-" + dateReplaced + "-" + (cusNear.size() + 1)
 	//(cusNear.size() + 1): Số column đc tạo ngay hôm đó  + 1
+	
+	@PostMapping(value = Constant.INVOICE_GET_LIST_PAGING_SORT_SEARCH_FILTER)
+	public ResponseEntity<APIResponse> getListPagingSortSearchFilter(@RequestBody InvoicePagingSearchModel pagingSearchSortModel){
+		try {
+			mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+			
+			Page<Invoice> page = invoiceService.doFilterSearchPagingInvoice(pagingSearchSortModel.getFromDate(), pagingSearchSortModel.getToDate(), pagingSearchSortModel.getDateExport(),
+					pagingSearchSortModel.getPageSize(), pagingSearchSortModel.getPageNumber(), pagingSearchSortModel.getSortCase(),
+						pagingSearchSortModel.isAscSort());
+			if(page == null) {
+				throw new ApplicationException(APIStatus.ERR_INVOICE_IS_EMPTY);
+			}
+			List<InvoiceResponse> responses = page.getContent().stream().map(item -> {
+				InvoiceResponse invoiceResponse = mapper.map(item, InvoiceResponse.class);
+				invoiceResponse.setSupplierId(item.getSupplierId());
+				APIResponse apiResponse = restTemplate.getForObject(Constant.SUPPLIER_SERVICE_API + "/supplier_get_detail/" + item.getSupplierId(), APIResponse.class);
+				if(apiResponse.getData() == null) {
+					log.error("error invoice supplier not exist");
+					throw new ApplicationException(APIStatus.ERR_INVOICE_SUPPLIER_NOT_EXIST);
+				}
+				ObjectMapper mapper = new ObjectMapper();
+				try {
+					String json = mapper.writeValueAsString(apiResponse.getData());
+					SupplierModel supplierModel = mapper.readValue(json, SupplierModel.class);
+					invoiceResponse.setSupplierName(supplierModel.getName());
+				} catch (Exception e) {
+					// TODO: handle exception
+					log.error("error get invoice pssf map json error");
+					throw new ApplicationException(APIStatus.ERR_INVOICE_IS_EMPTY);
+				}
+				return invoiceResponse;
+			}).collect(Collectors.toList());
+			
+			ModelResponse modelResponse = new ModelResponse(responses, page.getTotalElements(), page.getPageable());
+			log.info("get list filter successfully");
+			return ResponseUtil.responseSuccess(modelResponse);
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.error("error invoice list is empty");
+			throw new ApplicationException(APIStatus.ERR_INVOICE_IS_EMPTY);
+		}
+	}
 	
 	@PostMapping(value = Constant.INVOICE_CREATE)
 	public ResponseEntity<APIResponse> createInvoice(@RequestBody CreateInvoiceRequest invoiceRequest){
@@ -181,10 +232,18 @@ public class GoodsReceiptController {
 	}
 	
 	@GetMapping(value = "/get_product/{proId}")
-	public ResponseEntity<APIResponse> getProducts(@PathVariable("proId") long proId){
-		 
+	public ResponseEntity<APIResponse> getProducts(@PathVariable("proId") long proId) throws JsonMappingException, JsonProcessingException{
 		APIResponse apiResponse = restTemplate.getForObject(Constant.PRODUCT_SERVICE_API + "/product_get_detail/"+proId, APIResponse.class);
-		log.error("get products response {}",apiResponse);
+		ObjectMapper objectMapper = new ObjectMapper();
+		String json = objectMapper.writeValueAsString(apiResponse.getData());
+		ProductModel productModel = objectMapper.readValue(json, ProductModel.class);
+		 
+		System.out.println(apiResponse.getData().toString());	
+		System.out.println(productModel);	
+		
+//		log.error("get products response {}",apiResponse.getData().toString());
+//		ProductModel productModel = CommonUtil.jsonToObject(apiResponse.getData().toString(), ProductModel.class);
+//		log.error("get products response 1 {}",productModel);
 		return ResponseUtil.responseSuccess(apiResponse);
 	}
 }

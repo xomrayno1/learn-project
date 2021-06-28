@@ -93,10 +93,8 @@ public class ProductController {
 			
 			return ResponseUtil.responseSuccess(modelResponse);
 		} catch (Exception e) {
-			e.getStackTrace();
-			//throw new ApplicationException(APIStatus.ERR_PRODUCT_LIST_IS_EMPTY);
+			throw new ApplicationException(APIStatus.ERR_PRODUCT_LIST_IS_EMPTY);
 		}
-		return null;
 	}
 	
 	@GetMapping(Constant.PRODUCT_GET_DETAIL)

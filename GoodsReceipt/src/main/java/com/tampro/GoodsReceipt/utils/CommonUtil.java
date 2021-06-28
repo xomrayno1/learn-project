@@ -1,4 +1,4 @@
-package com.tampro.ManageService.utils;
+package com.tampro.GoodsReceipt.utils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,7 +8,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CommonUtil {
-	private ObjectMapper objectMapper = new ObjectMapper();
+	private static ObjectMapper objectMapper = new ObjectMapper();
 	
     public static boolean isValidPattern(String str, String regex) {
 
@@ -24,7 +24,7 @@ public class CommonUtil {
 
         return false;
     }
-    public <T> T jsonToObject(String json, Class<T> type) {
+    public static <T> T jsonToObject(String json, Class<T> type) {
         T target = null;
         try {
             target = objectMapper.readValue(json, type);
@@ -34,7 +34,7 @@ public class CommonUtil {
     
         return target;
     }
-    public <T> T jsonToObject(String json, TypeReference<T> type) {
+    public static <T> T jsonToObject(String json, TypeReference<T> type) {
         T target = null;
         try {
             target = objectMapper.readValue(json, type);
@@ -43,5 +43,4 @@ public class CommonUtil {
         }
         return target;
     }
-    
 }

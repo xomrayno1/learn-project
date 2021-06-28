@@ -13,8 +13,11 @@ import lombok.Setter;
 public class InvoicePagingSearchModel {
 	private Date toDate;
 	private Date fromDate;
+	private Date dateExport;
     private int pageNumber;
     private int pageSize;
+    private int sortCase;
+    private boolean ascSort;
   
 	
 	

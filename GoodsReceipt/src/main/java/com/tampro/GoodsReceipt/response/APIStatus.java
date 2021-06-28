@@ -12,11 +12,11 @@ public enum APIStatus {
 	ERR_BAD_PARAMS(406, "Bad parameters"),
 	INVALID_PARAMETER(407, "Invalid parameters"),
 	//notify message invoice
-	ERR_INVOICE_IS_EMPTY(516, "List of invoice is null"),
-	ERR_INVOICE_ID_NOT_EXIST(517, "Invoice not exist"),
-	ERR_CREATE_INVOICE(518, "Can't create invoice."),
-	ERR_UPDATE_INVOICE(519, "Can't update invoice."),
-	ERR_INVOICE_SUPPLIER_NOT_EXIST(517, "Supplier not exist"),
+	ERR_INVOICE_IS_EMPTY(516, "Danh sách hoá đơn trống"),
+	ERR_INVOICE_ID_NOT_EXIST(517, "Hoá đơn không tồn tại"),
+	ERR_CREATE_INVOICE(518, "Không thể thêm hoá đơn."),
+	ERR_UPDATE_INVOICE(519, "Không thể cập nhật hoá đơn."),
+	ERR_INVOICE_SUPPLIER_NOT_EXIST(520, "Nhà cung cấp không tồn tại"),
 	;
 
 	private final int code;

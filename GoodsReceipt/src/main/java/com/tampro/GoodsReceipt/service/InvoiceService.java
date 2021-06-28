@@ -30,9 +30,9 @@ public class InvoiceService {
 
 	private ModelMapper mapper = new ModelMapper();
 	
-	Page<Invoice> doFilterSearchPagingInvoice(Date fromDate, Date toDate, Date dateExport,int pageSize, int pageNumber){
+	public Page<Invoice> doFilterSearchPagingInvoice(Date fromDate, Date toDate, Date dateExport,int pageSize, int pageNumber, int sortCase, boolean ascSort){
 		Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
-		return invoiceRepo.findAll(new InvoiceSpecification(fromDate, toDate, dateExport), pageable);
+		return invoiceRepo.findAll(new InvoiceSpecification(fromDate, toDate, dateExport, sortCase, ascSort), pageable);
 	}
 	
 	boolean isExist(long invoiceId) {

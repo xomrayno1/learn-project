@@ -16,13 +16,22 @@ public class InvoiceSpecification implements Specification<Invoice>{
 	private final Date toDate;
 	private final Date fromDate;
 	private final Date dateExport;
-  
+    private int sortCase;
+    private boolean ascSort;
 	
-	public InvoiceSpecification(Date fromDate, Date toDate, Date dateExport) {
+ 
+
+
+	public InvoiceSpecification(Date fromDate, Date toDate, Date dateExport, int sortCase, boolean ascSort) {
+		super();
 		this.toDate = toDate;
 		this.fromDate = fromDate;
 		this.dateExport = dateExport;
+		this.sortCase = sortCase;
+		this.ascSort = ascSort;
 	}
+
+
 
 
 	@Override

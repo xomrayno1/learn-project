@@ -24,7 +24,7 @@ public interface Constant {
 	
 	//invocie API
 	public static final String GOODS_RECEIPT_API = API_PREFIX + "/goods-receipt";
-	public static final String INVOICE_GET_LIST_PAGING_SORT_SEARCH_FILTER ="/product_get_list_paging_sort_search_filter";
+	public static final String INVOICE_GET_LIST_PAGING_SORT_SEARCH_FILTER ="/invoice_get_list_paging_sort_search_filter";
 	public static final String INVOICE_GET_DETAIL = "/invoice_get_detail/{invoiId}";
 	public static final String INVOICE_DELETE = "/invoice_delete";
 	public static final String INVOICE_CREATE = "/invoice_create";

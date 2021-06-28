@@ -13,6 +13,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -33,17 +34,17 @@ public class BaseEntity {
 	private int activeFlag;
 	
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	@CreatedDate
 	@Column(name = "create_date", nullable = false, updatable = false)
 	@JsonProperty("create_date")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private Date createDate;
 	
 	@Temporal(TemporalType.DATE)
 	@LastModifiedDate
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	@Column(name = "update_date", nullable = false)
 	@JsonProperty("update_date")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private Date updateDate;
 
 }

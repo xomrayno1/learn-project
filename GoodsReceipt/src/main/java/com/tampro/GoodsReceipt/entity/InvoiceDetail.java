@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +28,7 @@ public class InvoiceDetail extends BaseEntity{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	@Column(name = "product_id", nullable = false)
+	@JsonProperty(value = "product_id")
 	private long productId;
 	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "invoice_id")

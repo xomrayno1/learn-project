@@ -11,7 +11,6 @@ import javax.persistence.TemporalType;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,12 +31,10 @@ public class BaseEntity {
 	@Temporal(TemporalType.DATE)
 	@CreatedDate
 	@Column(name = "create_date", nullable = false, updatable = false)
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	private Date createDate;
 	
 	@Temporal(TemporalType.DATE)
 	@LastModifiedDate
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	@Column(name = "update_date")
 	private Date updateDate;
 
