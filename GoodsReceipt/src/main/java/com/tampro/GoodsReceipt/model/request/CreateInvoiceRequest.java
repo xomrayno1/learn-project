@@ -1,8 +1,10 @@
 package com.tampro.GoodsReceipt.model.request;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tampro.GoodsReceipt.model.InvoiceDetailModel;
@@ -17,7 +19,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class CreateInvoiceRequest {
+public class CreateInvoiceRequest implements Serializable{
 	private double price;
 	private double discount;
 	private long count;
@@ -25,6 +27,7 @@ public class CreateInvoiceRequest {
 	@JsonProperty(value ="total_price")
 	private double totalPrice;
 	@JsonProperty(value ="date_export")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private Date dateExport;
 	@JsonProperty(value ="supplier_id")
 	private long supplierId;
