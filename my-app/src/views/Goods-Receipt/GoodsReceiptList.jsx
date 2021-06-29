@@ -34,6 +34,9 @@ import {
   getListPSSFGoodsReceipt,
   deleteGoodsReceipt
 } from '../../redux/action/goodsReceiptAction'
+import {
+  renderVND
+} from '../../utils/AppUtils'
 
 function GoodsReceiptList(props) {
   const dispatch = useDispatch();
@@ -60,7 +63,6 @@ function GoodsReceiptList(props) {
     dispatch(getListPSSFGoodsReceipt({...filter}));
   },[filter])
  
-
   const onHandlePagination = (page) => {
     setFilter({
       ...filter,
@@ -72,7 +74,6 @@ function GoodsReceiptList(props) {
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
  
-   
   const columns = [
     {
       title : 'Mã',
@@ -81,18 +82,27 @@ function GoodsReceiptList(props) {
     },{
       title : 'Cân nặng',
       dataIndex: 'weight',
+      render: (text) => {
+        return `${text} kg`
+      }
     },{
       title : 'Số lượng',
       dataIndex: 'count',
     },{
       title : 'Giá tiền',
       dataIndex: 'price',
+      render: (text) => {
+        return renderVND(text)
+      }
     },{
       title : 'Giảm giá',
       dataIndex: 'discount',
     },{
       title : 'Tổng tiền',
       dataIndex: 'total_price',
+      render: (text) => {
+        return renderVND(text)
+      }
     },{
       title : 'Nhà cung cấp',
       dataIndex: 'supplier_name',
@@ -179,6 +189,11 @@ function GoodsReceiptList(props) {
     console.log(dateString);
   }
 
+  const handleChangeDateExport = (value, dateString) =>{
+    console.log(value);
+    console.log(dateString);
+  }
+
     return (
         <>
           <div className="content">
@@ -207,7 +222,7 @@ function GoodsReceiptList(props) {
                     </Row>
                   </CardHeader>
                   <CardBody>
-                    <Row>
+                    {/* <Row>
                       <Col md="12" sm="12">                         
                             <Space>                  
                               <Select
@@ -225,7 +240,7 @@ function GoodsReceiptList(props) {
                               </Select>
                             </Space>
                       </Col>
-                    </Row>
+                    </Row> */}
                     <Divider/>
                     <Row>
                       <Col md="6" sm="6">
@@ -238,12 +253,10 @@ function GoodsReceiptList(props) {
                       </Col>
                       <Col md="6" sm="6">
                         <Space>                                          
-                              <Input                             
-                                ref={searchRef}
-                                onPressEnter={onHandleSearch} 
-                                placeholder="Nhập tên hoặc code để tìm kiếm..."
-                                className="max-width"
-                              />
+                        <Label>Ngày xuất hoá đơn: </Label>
+                              <DatePicker placeholder="Ngày xuất hoá đơn" 
+                                format="DD-MM-YYYY"  
+                                onChange={handleChangeDateExport}/>
                               <Button
                                 type="primary"
                                 onClick={onHandleSearch}
@@ -261,12 +274,12 @@ function GoodsReceiptList(props) {
                             columns={columns} 
                             rowSelection={rowSelection}
                              dataSource={goodsReceipts.content || []}
-                            // pagination= {{
-                            //   pageSize: products.pageable && products.pageable.pageSize || 10,
-                            //   current: products.pageable && products.pageable.pageNumber + 1,
-                            //   total : products.totalElements,
-                            //   onChange: onHandlePagination,
-                            // }}
+                            pagination= {{
+                              pageSize: goodsReceipts.pageable && goodsReceipts.pageable.pageSize || 10,
+                              current: goodsReceipts.pageable && goodsReceipts.pageable.pageNumber + 1,
+                              total : goodsReceipts.totalElements,
+                              onChange: onHandlePagination,
+                            }}
                             rowKey={record => record.id}
                           />
                         </Spin>

@@ -23,11 +23,16 @@ import SupplierSearch from '../Goods-Receipt/SupplierSearch'
 import SupplierModal from '../Supplier/SupplierModal'
 import ProductModal from '../Product/ProductModal'
 import ProductSearch from "./ProductSearch";
+import {notiError} from '../../utils/AppUtils'
+import {createGoodsReceipt} from '../../redux/action/goodsReceiptAction'
+import { useDispatch } from "react-redux";
 
 function GoodsReceiptForm() {
     const history = useHistory();
  
     const formRef = useRef();
+
+    const dispatch = useDispatch();
 
     const [modalSupplier, setModalSupplier] = useState({
         visible: false,
@@ -56,7 +61,7 @@ function GoodsReceiptForm() {
         })
     }
 
-    const onHandleSaveInvoice = async (item) => {
+    const onHandleSaveInvoice = (item) => {
         const newInvoice = {
             ...invoice,
             ...item
@@ -64,8 +69,13 @@ function GoodsReceiptForm() {
         setInvoice({
             ...newInvoice
         })
-        //save invoice
-        console.log(newInvoice);
+        if(item.date_export === '' || item.supplier_id === ''){
+            notiError('Điền đầy đủ')
+        }else{
+            //save invoice
+            console.log(newInvoice);
+            dispatch(createGoodsReceipt(newInvoice));
+        }
     }
  
     const onHandleChangeDateExport = (date, dateString) =>{
