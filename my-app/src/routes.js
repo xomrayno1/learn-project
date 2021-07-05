@@ -9,8 +9,9 @@ import BrandList from "views/Brand/BrandList"
 import CategoryList from 'views/Category/CategoryList'
 import SupplierList from 'views/Supplier/SupplierList'
 import ProductList from 'views/Product/ProductList'
-import GoodsReceiptList from 'views/Goods-Receipt/GoodsReceiptList'
-import GoodsReceiptForm from 'views/Goods-Receipt/GoodReceiptForm'
+import GoodReceiptList from 'views/Goods-Receipt/GoodReceiptList'
+import GoodReceiptForm from 'views/Goods-Receipt/GoodReceiptForm'
+ 
 
 var routes = [
   {
@@ -24,7 +25,7 @@ var routes = [
     path: "/goods-receipt",
     name: "Nhập hàng",
     icon: "tim-icons icon-cloud-upload-94",
-    component: GoodsReceiptList,
+    component: GoodReceiptList,
     layout: "/admin",
     display: true
   },{
@@ -94,7 +95,7 @@ var routes = [
     path: "/goods-receipt/invoice",
     name: "create",
     icon: "tim-icons icon-align-center",
-    component: GoodsReceiptForm,
+    component: GoodReceiptForm,
     layout: "/admin",
     display: false
   }

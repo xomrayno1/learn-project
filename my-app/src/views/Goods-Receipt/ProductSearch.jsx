@@ -37,7 +37,7 @@ function ProductSearch({setModalProduct, invoice, onHandleSaveInvoice}) {
     let {products} = useSelector(state => state.product);
     !products && (products = {content: []}) // first render products is null
 
-   // const [searchKeyProduct, setSearchKeyProduct] = useState('');
+    const history = useHistory();
 
     const [filterPro, setFilterPro] = useState({
         "searchKey" : "",
@@ -239,6 +239,10 @@ function ProductSearch({setModalProduct, invoice, onHandleSaveInvoice}) {
         onHandleSaveInvoice(newInvoice)
     }
 
+    const onBack = () => {
+        history.push("/admin/goods-receipt")
+    }
+
     return (
         <>
             <CardBody>
@@ -326,7 +330,7 @@ function ProductSearch({setModalProduct, invoice, onHandleSaveInvoice}) {
                     <Col md="6" sm="6">
                         <Space>
                             <Button key="save" type="primary" onClick={onHandleSave}>Lưu</Button>
-                            <Button key="back">Quay lại</Button>
+                            <Button key="back" onClick={onBack}>Quay lại</Button>
                         </Space>
                     </Col>
                 </Row>

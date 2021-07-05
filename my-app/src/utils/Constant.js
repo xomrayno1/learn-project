@@ -167,6 +167,7 @@ export const GOODS_RECEIPT_API_GET_LIST_PSSF = GOODS_RECEIPT_API + '/invoice_get
 export const GOODS_RECEIPT_API_DELETE = GOODS_RECEIPT_API + '/invoice_delete'
 export const GOODS_RECEIPT_API_CREATE = GOODS_RECEIPT_API + '/invoice_create'
 export const GOODS_RECEIPT_API_UPDATE = GOODS_RECEIPT_API + '/invoice_update'
+export const GOODS_RECEIPT_API_GET_DETAIL = GOODS_RECEIPT_API + '/invoice_get_detail/'
 
 //define code status error
 export const OK = 200;

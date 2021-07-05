@@ -4,6 +4,7 @@ import {
     GOODS_RECEIPT_API_CREATE,
     GOODS_RECEIPT_API_UPDATE,
     GOODS_RECEIPT_API_DELETE,
+    GOODS_RECEIPT_API_GET_DETAIL
 } from '../utils/Constant'
 
 const goodsReceiptAPI = {
@@ -18,6 +19,9 @@ const goodsReceiptAPI = {
     },
     createGoodsReceipt: (params) => {
         return axiosClient.post(GOODS_RECEIPT_API_CREATE, params);
+    },
+    getInvoiceDetail: (id) =>{
+        return axiosClient.get(`${GOODS_RECEIPT_API_GET_DETAIL}/${id}`);
     },
 }
 export default goodsReceiptAPI;

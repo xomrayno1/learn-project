@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "../style/style.css"
 import {
   DeleteOutlined,
   PlusOutlined,
-  FormOutlined,
+  EyeOutlined,
   SearchOutlined
  } from '@ant-design/icons';
 import {
@@ -20,10 +20,7 @@ import {
   Space, 
   Button, 
   Divider, 
-  Input, Spin, 
-  Menu, 
-  Dropdown, 
-  Select,
+  Spin, 
   DatePicker
 } from 'antd'
 import {useDispatch, useSelector} from 'react-redux'
@@ -38,11 +35,11 @@ import {
   renderVND
 } from '../../utils/AppUtils'
 
-function GoodsReceiptList(props) {
+function GoodReceiptList(props) {
   const dispatch = useDispatch();
   const {isLoading, goodsReceipts} = useSelector(state => state.goodsReceipt);
   let history = useHistory();
-
+   
   const [filter, setFilter] = useState({
     "sortCase" : 1,
     "ascSort": true,
@@ -70,8 +67,6 @@ function GoodsReceiptList(props) {
     })
   }
  
-  const searchRef = useRef('');
-
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
  
   const columns = [
@@ -126,8 +121,8 @@ function GoodsReceiptList(props) {
               key="1" 
               type="primary" 
               onClick={() => onUpdate(record)}
-              icon={<FormOutlined />}
-              >Cập nhật</Button>
+              icon={<EyeOutlined />}
+              >Chi tiết</Button>
           </Space>
         </>
       },
@@ -146,8 +141,9 @@ function GoodsReceiptList(props) {
     history.push("/admin/goods-receipt/invoice");
   }
 
-  const onUpdate = (data) =>{
- 
+  const onUpdate = ({id}) =>{
+    console.log(id);
+     
   }
 
   const onHandleDelete = () => {
@@ -160,41 +156,46 @@ function GoodsReceiptList(props) {
     setFilter({
       ...filter,
       ...search,
-      searchKey: searchRef.current.state.value,      
-      pageNumber: 1
+      pageNumber: 1,
     })
   }
 
-  const onHandleChangeSortAsc = (value) => {
-    setFilter({
-      ...filter,
-      ascSort: value === 'asc' ? true : false
-    })
-  }
+  // const onHandleChangeSortAsc = (value) => {
+  //   setFilter({
+  //     ...filter,
+  //     ascSort: value === 'asc' ? true : false
+  //   })
+  // }
 
-  const onHandleChangeSortKey = (value) => {
-    setFilter({
-      ...filter,
-      sortCase: Number(value)
-    })
-  }
+  // const onHandleChangeSortKey = (value) => {
+  //   setFilter({
+  //     ...filter,
+  //     sortCase: Number(value)
+  //   })
+  // }
   
   const handleChangeDateFrom = (value, dateString) => {
-    console.log(value);
-    console.log(dateString);
+    setSearch({
+      ...search,
+      fromDate: dateString
+    })
   }
 
   const handleChangeDateTo = (value, dateString) => {
-    console.log(value);
-    console.log(dateString);
+    setSearch({
+      ...search,
+      toDate: dateString
+    })
   }
 
   const handleChangeDateExport = (value, dateString) =>{
-    console.log(value);
-    console.log(dateString);
+    setSearch({
+      ...search,
+      dateExport: dateString
+    })
   }
 
-    return (
+  return (
         <>
           <div className="content">
             <Row>
@@ -294,4 +295,4 @@ function GoodsReceiptList(props) {
       );
 }
 
-export default GoodsReceiptList;
+export default GoodReceiptList;

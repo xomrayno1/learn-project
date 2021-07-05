@@ -18,16 +18,22 @@ import {
     PlusOutlined,
     UserOutlined,
     CloseOutlined,
-    ContactsOutlined
 } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux';
+import {useParams} from 'react-router-dom'
 
+import {
+    GOODS_RECEIPT_API_GET_DETAIL
+} from '../../utils/Constant'
 import {
     getListPSSFSupplier
 } from '../../redux/action/supplierAction'
 
 function SupplierSearch({ setModalSupplier, onSetInvoice}) {
-    const [isEnableSupplier, setEnableSupplier] = useState(false)
+    const {id} = useParams(); // get params
+
+    const [isEnableSupplier, setEnableSupplier] = useState(id ? true : false);
+
     const dispatch = useDispatch();
 
     let {suppliers} = useSelector(state => state.supplier)

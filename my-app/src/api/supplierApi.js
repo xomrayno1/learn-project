@@ -18,6 +18,6 @@ const supplierAPI = {
     },
     deleteSupplier: (params) => {
         return axiosClient.post(SUPPLIER_API_DELETE, params);
-    }
+    },
 }
 export default supplierAPI;
