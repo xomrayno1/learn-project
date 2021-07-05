@@ -1,5 +1,6 @@
 package com.tampro.GoodsReceipt.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -14,10 +15,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,7 +29,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Invoice extends BaseEntity{
+public class Invoice extends BaseEntity implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
@@ -45,7 +44,7 @@ public class Invoice extends BaseEntity{
 	@Column(name = "total_price", nullable = false, columnDefinition = "Decimal(10,2)")
 	private double totalPrice;
 	@Column(name = "date_export", nullable = false)
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	@Temporal(TemporalType.DATE)
 	private Date dateExport;
 	@Column(name = "supplier_id", nullable = false)

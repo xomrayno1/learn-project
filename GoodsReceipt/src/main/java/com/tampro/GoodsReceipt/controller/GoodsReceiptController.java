@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,7 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tampro.GoodsReceipt.config.RabbitMQConfig;
 import com.tampro.GoodsReceipt.entity.Invoice;
 import com.tampro.GoodsReceipt.entity.InvoiceDetail;
 import com.tampro.GoodsReceipt.exception.ApplicationException;
@@ -60,6 +62,9 @@ public class GoodsReceiptController {
 	
 	@Autowired
 	private InvoiceService invoiceService;
+	
+	@Autowired
+	private RabbitTemplate rabbitTemplate;
 	
 	private static final Logger log = LoggerFactory.getLogger(GoodsReceiptController.class);
 
@@ -145,6 +150,8 @@ public class GoodsReceiptController {
 			invoice.setActiveFlag(Constant.ACTIVE);
 			invoice.setInvoiceDetails(details);
 			invoiceService.save(invoice);
+			
+			rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE, RabbitMQConfig.ROUTING_KEY, "create invoice successfully");
 			//save
 			return ResponseUtil.responseSuccess("create invoice successfully");
 		} catch (Exception e) {
@@ -174,6 +181,36 @@ public class GoodsReceiptController {
 			}
 			log.error("delete invoice successfully");
 			return ResponseUtil.responseSuccess("delete invoice successfully");
+		} catch (Exception e) {
+			log.error("error delete invoice id not exist");
+			throw new ApplicationException(APIStatus.ERR_INVOICE_ID_NOT_EXIST);
+		}
+	}
+	
+	@GetMapping(value = Constant.INVOICE_GET_DETAIL)
+	public ResponseEntity<APIResponse> getInvoiceDetail(@PathVariable("invoiId") long invoiId){
+		try {
+			Invoice invoice = invoiceService.invoiceById(invoiId);
+			InvoiceResponse invoiceResponse = mapper.map(invoice, InvoiceResponse.class);
+			invoiceResponse.setSupplierId(invoice.getSupplierId());
+			APIResponse apiResponse = restTemplate.getForObject(Constant.SUPPLIER_SERVICE_API + "/supplier_get_detail/" + invoice.getSupplierId(), APIResponse.class);
+			if(apiResponse.getData() == null) {
+				log.error("error invoice supplier not exist");
+				throw new ApplicationException(APIStatus.ERR_INVOICE_SUPPLIER_NOT_EXIST);
+			}
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				String json = mapper.writeValueAsString(apiResponse.getData());
+				SupplierModel supplierModel = mapper.readValue(json, SupplierModel.class);
+				invoiceResponse.setSupplierName(supplierModel.getName());
+			} catch (Exception e) {
+				// TODO: handle exception
+				log.error("error get invoice detail map json error");
+				throw new ApplicationException(APIStatus.ERR_INVOICE_ID_NOT_EXIST);
+			}
+	 	
+			log.error("get invoice detail success");
+			return ResponseUtil.responseSuccess(invoiceResponse);
 		} catch (Exception e) {
 			log.error("error delete invoice id not exist");
 			throw new ApplicationException(APIStatus.ERR_INVOICE_ID_NOT_EXIST);
