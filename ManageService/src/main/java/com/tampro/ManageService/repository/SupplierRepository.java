@@ -20,4 +20,6 @@ public interface SupplierRepository extends JpaRepository<Supplier, Long>, JpaSp
 	Supplier findByName(String name);
 	
 	Supplier findByEmail(String email);
+	
+	Supplier findByCode(String code);
 }

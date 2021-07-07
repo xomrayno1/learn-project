@@ -7,8 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,4 +30,6 @@ public class Supplier extends BaseEntity{
 	private String email;
 	@Column(name = "address", length = 255, nullable = true)
 	private String address;
+	@Column(name = "code", length = 16, nullable = true)
+	private String code;
 }

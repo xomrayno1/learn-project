@@ -81,16 +81,16 @@ public class SupplierController {
 
 	@PostMapping(value = Constant.SUPPLIER_CREATE)
 	public ResponseEntity<APIResponse> createSupplier(@Valid @RequestBody CreateSupplierRequest supplierRequest){
-		Supplier getSupplierByName = supplierService.supplierByName(supplierRequest.getName());
+		Supplier getSupplierByCode = supplierService.supplierByCode(supplierRequest.getCode());
 		Supplier getSupplierByEmail = supplierService.supplierByEmail(supplierRequest.getEmail());
 		
 		if(CommonUtil.isValidPattern(supplierRequest.getEmail(), Constant.EMAIL_PATTERN)) {
 			log.error("error supplier email incorrect format");
 			throw new ApplicationException(APIStatus.ERR_SUPPLIER_EMAIL_INCORRECT_FORMAT);
 		}
-		if (getSupplierByName != null) {
+		if (getSupplierByCode != null) {
 			log.error("error supplier name already exists");
-			throw new ApplicationException(APIStatus.ERR_SUPPLIER_NAME_ALREADY_EXISTS);
+			throw new ApplicationException(APIStatus.ERR_SUPPLIER_CODE_ALREADY_EXISTS);
 		}
 		if (getSupplierByEmail != null) {
 			log.error("error supplier email already exists");
@@ -135,13 +135,13 @@ public class SupplierController {
 	@PutMapping(value = Constant.SUPPLIER_UPDATE)
 	public ResponseEntity<APIResponse> updateSupplier(@Validated @RequestBody UpdateSupplierRequest supplierRequest){
 		Supplier supplierById = supplierService.supplierById(supplierRequest.getId());
-		Supplier supplierByName = supplierService.supplierByName(supplierRequest.getName());
+		Supplier supplierByCode = supplierService.supplierByCode(supplierRequest.getCode());
 		Supplier supplierByEmail = supplierService.supplierByEmail(supplierRequest.getEmail());
 		if(supplierById != null) {
-			if(supplierByName != null) {
-				if(!supplierByName.getName().equals(supplierById.getName())) {
-					log.error("error update supplier name already exist");
-					throw new ApplicationException(APIStatus.ERR_SUPPLIER_NAME_ALREADY_EXISTS);
+			if(supplierByCode != null) {
+				if(!supplierByCode.getCode().equals(supplierById.getCode())) {
+					log.error("error update supplier code already exist");
+					throw new ApplicationException(APIStatus.ERR_SUPPLIER_CODE_ALREADY_EXISTS);
 				}
 			}
 			if(CommonUtil.isValidPattern(supplierRequest.getEmail(), Constant.EMAIL_PATTERN)) {

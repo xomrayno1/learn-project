@@ -21,6 +21,9 @@ public class CreateSupplierRequest {
 	@Email(message = "Email nhà cung cấp không đúng định dạng")
 	@Size(max = 32, min = 12, message = "Độ dài của trường từ 12 đến 32 kí tự")
 	private String email;
+	@NotBlank(message = "Không được để trống code")
+	@Size(max = 16, min = 2, message = "Độ dài của trường từ 2 đến 16 kí tự")
+	private String code;
 	private String address;
 	private String phone;
 }

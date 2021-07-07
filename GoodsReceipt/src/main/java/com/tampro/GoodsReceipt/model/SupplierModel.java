@@ -19,6 +19,7 @@ public class SupplierModel {
 	private String name;
 	private String phone;
 	private String email;
+	private String code;
 	private String address;
 	@JsonProperty("create_date")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")

@@ -51,6 +51,10 @@ public class SupplierService {
 		return supplierRepo.findByEmail(email);
 	}
 	
+	public Supplier supplierByCode(String code) {
+		return supplierRepo.findByCode(code);
+	}
+	
 	public List<Supplier> supplierByActive(int activeFlag){
 		return supplierRepo.findByActiveFlag(activeFlag);
 	}

@@ -302,8 +302,9 @@ public class GoodsReceiptController {
 	//	SELECT sum(ID.total_price) as 'Tổng tiền ', sum(ID.weight * ID.count) as 'Tổng kg', 
 	//	ID.id, ID.price, ID.product_id, sum(ID.count) as 'Số lượng'  FROM invoice_detail as ID
 	//	inner join invoice i on i.id = ID.invoice_id
+	//  inner join supplier s on s.id = i.supplier_id
 	//	where MONTH (i.date_export) = MONTH('2021-07-07') 
-	//	and i.supplier_id = 1
+	//	and s.code = "RSTART"
 	//	group by ID.product_id
 	
 	@GetMapping(value = "/get_product/{proId}")

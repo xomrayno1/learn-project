@@ -17,6 +17,7 @@ public interface Constant {
 	//sort by supplier
 	public static final int SORT_BY_SUPPLIER_ID = 1;
 	public static final int SORT_BY_SUPPLIER_NAME = 2;
+	public static final int SORT_BY_SUPPLIER_CODE = 3;
 	
 	//sort by category
 	public static final int SORT_BY_CATEGORY_ID = 1;

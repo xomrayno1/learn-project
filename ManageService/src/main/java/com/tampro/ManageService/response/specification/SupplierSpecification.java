@@ -30,7 +30,8 @@ public class SupplierSpecification implements Specification<Supplier>{
 			String wrapSearch = "%" + searchKey.trim() + "%";
 			Predicate preName = criteriaBuilder.like(root.get("name"), wrapSearch);
 			Predicate preEmail = criteriaBuilder.like(root.get("email"), wrapSearch);
-			Predicate preSearch = criteriaBuilder.or(preName, preEmail);
+			Predicate preCode = criteriaBuilder.like(root.get("code"), wrapSearch);
+			Predicate preSearch = criteriaBuilder.or(preName, preCode, preEmail);
 			predicates.add(preSearch);
 		}
 
@@ -44,6 +45,9 @@ public class SupplierSpecification implements Specification<Supplier>{
 				break;
 			case Constant.SORT_BY_SUPPLIER_NAME:
 				orderClause = root.get("name");
+				break;
+			case Constant.SORT_BY_SUPPLIER_CODE:
+				orderClause = root.get("code");
 				break;
 			default:
 				orderClause = root.get("name");

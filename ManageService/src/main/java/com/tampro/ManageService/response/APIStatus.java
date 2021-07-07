@@ -26,7 +26,7 @@ public enum APIStatus {
 	//notify message category
 	ERR_SUPPLIER_LIST_IS_EMPTY(216, "Danh sách nhà cung cấp trống."),
 	ERR_SUPPLIER_ID_NOT_EXIST(217, "Nhà cung cấp không tồn tại."),
-	ERR_SUPPLIER_NAME_ALREADY_EXISTS(218, "Tên nhà cung cấp đã tồn tại."),
+	ERR_SUPPLIER_CODE_ALREADY_EXISTS(218, "Code nhà cung cấp đã tồn tại."),
 	ERR_CREATE_SUPPLIER(219, "Không thể thêm nhà cung cấp."),
 	ERR_UPDATE_SUPPLIER(220, "Không thể cập nhật nhà cung cấp."),
 	ERR_SUPPLIER_EMAIL_ALREADY_EXISTS(221, "Email nhà cung cấp đã tồn tại."),
