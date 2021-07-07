@@ -38,6 +38,7 @@ import com.tampro.GoodsReceipt.model.SupplierModel;
 import com.tampro.GoodsReceipt.model.request.CreateInvoiceRequest;
 import com.tampro.GoodsReceipt.model.request.InvoicePagingSearchModel;
 import com.tampro.GoodsReceipt.model.request.UpdateInvoiceRequest;
+import com.tampro.GoodsReceipt.model.response.InvoiceDetailResponse;
 import com.tampro.GoodsReceipt.model.response.InvoiceResponse;
 import com.tampro.GoodsReceipt.model.response.ModelResponse;
 import com.tampro.GoodsReceipt.response.APIResponse;
@@ -62,7 +63,7 @@ public class GoodsReceiptController {
 	
 	@Autowired
 	private InvoiceService invoiceService;
-	
+ 
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
 	
@@ -267,6 +268,43 @@ public class GoodsReceiptController {
 			throw new ApplicationException(APIStatus.ERR_UPDATE_INVOICE);
 		}
 	}
+	
+	@GetMapping(value = Constant.INVOICE_DETAIL_GET_BY_INVOICE)
+	public ResponseEntity<APIResponse> getInvoiceDetailGetByInvoice(@PathVariable("invoiId") long invoiId){
+		mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+			List<InvoiceDetailResponse> response = new ArrayList<>();
+			List<InvoiceDetail> list = invoiceService.getInvoiceDetailByInvoice(invoiId);
+			list.forEach(item -> {
+				InvoiceDetailResponse invoiceDetailResponse = mapper.map(item, InvoiceDetailResponse.class);
+				invoiceDetailResponse.setInvoiceId(item.getInvoice().getId());
+				APIResponse apiResponse = restTemplate.getForObject(Constant.PRODUCT_SERVICE_API + "/product_get_detail/" + item.getProductId(), APIResponse.class); 
+				try {
+					String json = objectMapper.writeValueAsString(apiResponse.getData());
+					ProductModel productModel = objectMapper.readValue(json, ProductModel.class);
+					invoiceDetailResponse.setProductName(productModel.getName());
+					response.add(invoiceDetailResponse);
+				} catch (JsonMappingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (JsonProcessingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
+			return ResponseUtil.responseSuccess(response);
+		} catch (Exception e) {
+			throw new ApplicationException(APIStatus.ERR_INVOICE_ID_NOT_EXIST);
+		}	 
+	}
+	
+	//	SELECT sum(ID.total_price) as 'Tổng tiền ', sum(ID.weight * ID.count) as 'Tổng kg', 
+	//	ID.id, ID.price, ID.product_id, sum(ID.count) as 'Số lượng'  FROM invoice_detail as ID
+	//	inner join invoice i on i.id = ID.invoice_id
+	//	where MONTH (i.date_export) = MONTH('2021-07-07') 
+	//	and i.supplier_id = 1
+	//	group by ID.product_id
 	
 	@GetMapping(value = "/get_product/{proId}")
 	public ResponseEntity<APIResponse> getProducts(@PathVariable("proId") long proId) throws JsonMappingException, JsonProcessingException{

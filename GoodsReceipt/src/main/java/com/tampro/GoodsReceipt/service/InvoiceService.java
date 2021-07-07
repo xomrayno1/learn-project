@@ -1,9 +1,8 @@
 package com.tampro.GoodsReceipt.service;
 
 import java.util.Date;
+import java.util.List;
 
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,11 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tampro.GoodsReceipt.entity.Invoice;
 import com.tampro.GoodsReceipt.entity.InvoiceDetail;
-import com.tampro.GoodsReceipt.exception.ApplicationException;
-import com.tampro.GoodsReceipt.model.request.CreateInvoiceRequest;
 import com.tampro.GoodsReceipt.repository.InvoiceDetailRepository;
 import com.tampro.GoodsReceipt.repository.InvoiceRepository;
-import com.tampro.GoodsReceipt.response.APIStatus;
 import com.tampro.GoodsReceipt.response.specification.InvoiceSpecification;
 
 @Service
@@ -25,11 +21,10 @@ import com.tampro.GoodsReceipt.response.specification.InvoiceSpecification;
 public class InvoiceService {
 	@Autowired
 	private InvoiceRepository invoiceRepo;
+	
 	@Autowired
 	private InvoiceDetailRepository invoiceDetailRepo;
 
-	private ModelMapper mapper = new ModelMapper();
-	
 	public Page<Invoice> doFilterSearchPagingInvoice(Date fromDate, Date toDate, Date dateExport,int pageSize, int pageNumber, int sortCase, boolean ascSort){
 		Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
 		return invoiceRepo.findAll(new InvoiceSpecification(fromDate, toDate, dateExport, sortCase, ascSort), pageable);
@@ -39,7 +34,6 @@ public class InvoiceService {
 		 return invoiceRepo.findById(invoiceId) != null ? true : false;
 	}
 	
-
 	public Invoice save(Invoice invoice) {
  
 		return invoiceRepo.save(invoice);
@@ -60,5 +54,7 @@ public class InvoiceService {
 		return invoiceRepo.getOne(invoiceId);
 	}
 
- 
+	public List<InvoiceDetail> getInvoiceDetailByInvoice(long invoiceId){
+		return invoiceDetailRepo.getInvoiceDetailByInvoice(invoiceId);
+	}
 }
