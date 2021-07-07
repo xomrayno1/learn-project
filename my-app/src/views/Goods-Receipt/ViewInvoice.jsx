@@ -120,10 +120,11 @@ function ViewInvoice({view, onHandleCancel}) {
                                 padding: '0px 0px 0px 15px'
                             }}>
                                 <Descriptions title="Thông tin nhà cung cấp">
-                                    <Descriptions.Item span="2" label="Tên">{suplierInfo.name}</Descriptions.Item>
-                                    <Descriptions.Item span="2" label="Điện thoại">{suplierInfo.phone}</Descriptions.Item>
-                                    <Descriptions.Item span="2" label="Email">{suplierInfo.email}</Descriptions.Item>
-                                    <Descriptions.Item span="2" label="Địa chỉ">{suplierInfo.address}</Descriptions.Item>
+                                    <Descriptions.Item colSpan="2" label="Tên" key="supName">{suplierInfo.name}</Descriptions.Item>
+                                    <Descriptions.Item colSpan="2" label="Code" key="supCode">{suplierInfo.code}</Descriptions.Item>
+                                    <Descriptions.Item colSpan="2" label="Điện thoại" key="supPhone">{suplierInfo.phone}</Descriptions.Item>
+                                    <Descriptions.Item colSpan="2" label="Email" key="supEmail">{suplierInfo.email}</Descriptions.Item>
+                                    <Descriptions.Item colSpan="2" label="Địa chỉ" key="supAddress">{suplierInfo.address}</Descriptions.Item>
                                 </Descriptions>
                             </Row>
                         </Row>
@@ -144,6 +145,7 @@ function ViewInvoice({view, onHandleCancel}) {
                                         total: item.size,
                                         defaultPageSize: 5
                                     }}
+                                    rowKey= { record => record.id}
                                     summary={
                                         () => {
                                            

@@ -73,6 +73,9 @@ function ListSupplier(props) {
       title : 'Tên nhà cung cấp',
       dataIndex: 'name',
     },{
+      title : 'Code',
+      dataIndex: 'code',
+    },{
       title : 'Số điện thoại',
       dataIndex: 'phone',
     },{
@@ -112,7 +115,6 @@ function ListSupplier(props) {
       setSelectedRowKeys(selectedRowKeys);
     },
   }
-
 
   const onCreate = () =>{
     setModal({
@@ -206,6 +208,7 @@ function ListSupplier(props) {
                                 onChange={onHandleChangeSortKey}>
                               <Select.Option value="1">Sắp xếp theo Id</Select.Option>
                               <Select.Option value="2">Sắp xếp theo Tên</Select.Option>
+                              <Select.Option value="3">Sắp xếp theo Code</Select.Option>
                             </Select>
                           </Space>
                       </Col>
@@ -213,7 +216,7 @@ function ListSupplier(props) {
                         <Input 
                           ref={searchRef}
                           onPressEnter={onHandleSearch} 
-                          placeholder="Nhập tên để tìm kiếm..." />
+                          placeholder="Nhập tên hoặc email hoặc code để tìm kiếm..." />
                       </Col>
                       <Col md="2" sm="2" style={{
                         padding: '0 0 0 0'
@@ -248,14 +251,12 @@ function ListSupplier(props) {
                   </CardBody>
                 </Card>
               </Col>
-
-           {/*Modal form*/}
-            <SupplierModal 
-              modal={modal} 
-              formRef={formRef} 
-              setModal={setModal}
-            />
-
+            {/*Modal form*/}
+              <SupplierModal 
+                modal={modal} 
+                formRef={formRef} 
+                setModal={setModal}
+              />
             </Row>
           </div>
         </>

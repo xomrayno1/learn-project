@@ -47,7 +47,7 @@ function Statistics(props) {
                         <Card>
                             <CardHeader>
                                 <CardTitle tag="h4">Tháng hiện tại</CardTitle>
-                                <p className="category">Thống kê khuyến mãi cho hãng cám red star</p>
+                                <p className="category">Thống kê khuyến mãi cho nhà cung cấp ANT MV. ( Mã ANT MV)</p>
                             </CardHeader>
                             <CardBody>
                                 <Table className="tablesorter" responsive>
@@ -78,8 +78,8 @@ function Statistics(props) {
                     <Col md="12">
                         <Card className="card-plain">
                             <CardHeader>
-                                <CardTitle tag="h4">Khuyến mãi tháng tiếp theo</CardTitle>
-                                {/* <p className="category">Tháng tiếp theo</p> */}
+                                <CardTitle tag="h4">Khuyến mãi</CardTitle>
+                                <p className="category">Tháng tiếp theo nhận được khuyến mãi</p>
                             </CardHeader>
                             <CardBody>
                                 <Table className="tablesorter" responsive>

@@ -20,6 +20,7 @@ function SupplierModal({modal, formRef, setModal}) {
     const supplierSchema = Yup.object({
         name: Yup.string().required("Không được để trống tên !"),
         email: Yup.string().required("Không được để trống email !"),
+        code: Yup.string().required("Không được để trống code !"),
     })
 
     const onCancelModal = () => {
@@ -60,7 +61,8 @@ function SupplierModal({modal, formRef, setModal}) {
                     name:'',
                     phone: '',
                     email: '',
-                    address: ''
+                    address: '',
+                    code : ''
                 }}
                 onSubmit={onHandleSave}
                 innerRef={formRef}
@@ -76,6 +78,15 @@ function SupplierModal({modal, formRef, setModal}) {
                         </Col>
                         <Col md="12">
                             <ErrorMessage name="name" component="div" className="error-message" />
+                        </Col>
+                    </Row>
+                    <Row className="margin-5px">
+                        <Col md="12">
+                            <Label>Code :</Label>
+                            <Field name="code" as={CustomInputText} placeholder="Code" />
+                        </Col>
+                        <Col md="12">
+                            <ErrorMessage name="code" component="div" className="error-message" />
                         </Col>
                     </Row>
                     <Row className="margin-5px">

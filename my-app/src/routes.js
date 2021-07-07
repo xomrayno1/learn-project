@@ -24,7 +24,7 @@ var routes = [
     display: true
   },{
     path: "/tables",
-    name: "Thống kê khuyến mãi red star",
+    name: "Thống kê khuyến mãi ANT MV",
     icon: "tim-icons icon-gift-2",
     component: Statistics,
     layout: "/admin",
