@@ -34,6 +34,10 @@ import {
 import {
   renderVND
 } from '../../utils/AppUtils'
+import ViewInvoice from '../Goods-Receipt/ViewInvoice'
+
+
+
 
 function GoodReceiptList(props) {
   const dispatch = useDispatch();
@@ -68,6 +72,12 @@ function GoodReceiptList(props) {
   }
  
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+
+  const [viewInvoice, setViewInvoice] = useState({
+    visible: false, 
+    data: ''
+  })
  
   const columns = [
     {
@@ -120,7 +130,7 @@ function GoodReceiptList(props) {
             <Button 
               key="1" 
               type="primary" 
-              onClick={() => onUpdate(record)}
+              onClick={() => onHandleViewInvoice(record)}
               icon={<EyeOutlined />}
               >Chi tiết</Button>
           </Space>
@@ -141,9 +151,20 @@ function GoodReceiptList(props) {
     history.push("/admin/goods-receipt/invoice");
   }
 
-  const onUpdate = ({id}) =>{
-    console.log(id);
-     
+  const onHandleViewInvoice = (record) =>{
+    setViewInvoice({
+      ...viewInvoice,
+      data: record,
+      visible: true
+    })
+  }
+
+  const onHandleCancelViewInvoice = () => {
+    setViewInvoice({
+      ...viewInvoice,
+      data: '',
+      visible: false
+    })
   }
 
   const onHandleDelete = () => {
@@ -285,6 +306,7 @@ function GoodReceiptList(props) {
                           />
                         </Spin>
                       </Col>
+                      <ViewInvoice view={viewInvoice}  onHandleCancel={onHandleCancelViewInvoice}/>
                     </Row>
                   </CardBody>
                 </Card>

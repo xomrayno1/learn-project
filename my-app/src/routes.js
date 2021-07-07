@@ -11,6 +11,7 @@ import SupplierList from 'views/Supplier/SupplierList'
 import ProductList from 'views/Product/ProductList'
 import GoodReceiptList from 'views/Goods-Receipt/GoodReceiptList'
 import GoodReceiptForm from 'views/Goods-Receipt/GoodReceiptForm'
+import Statistics from 'views/statistics/Statistics'
  
 
 var routes = [
@@ -19,6 +20,13 @@ var routes = [
     name: "Dashboard",
     icon: "tim-icons icon-chart-pie-36",
     component: Dashboard,
+    layout: "/admin",
+    display: true
+  },{
+    path: "/tables",
+    name: "Thống kê khuyến mãi red star",
+    icon: "tim-icons icon-gift-2",
+    component: Statistics,
     layout: "/admin",
     display: true
   },{
@@ -82,13 +90,6 @@ var routes = [
     name: "Table List",
     icon: "tim-icons icon-puzzle-10",
     component: TableList,
-    layout: "/admin",
-    display: true
-  },{
-    path: "/typography",
-    name: "Typography",
-    icon: "tim-icons icon-align-center",
-    component: Typography,
     layout: "/admin",
     display: true
   },{

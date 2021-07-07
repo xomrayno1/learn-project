@@ -159,7 +159,9 @@ export const SUPPLIER_API_GET_LIST_PSSF = SUPPLIER_API + '/supplier_get_list_pag
 export const SUPPLIER_API_DELETE = SUPPLIER_API + '/supplier_delete'
 export const SUPPLIER_API_CREATE = SUPPLIER_API + '/supplier_create'
 export const SUPPLIER_API_UPDATE = SUPPLIER_API + '/supplier_update'
-export const SUPPLIER_API_GET_LIST_ACTIVE = SUPPLIER_API + '/supplier_get_list_active'
+export const SUPPLIER_API_GET_LIST_ACTIVE = SUPPLIER_API + '/supplier_get_list_active';
+export const SUPPLIER_API_GET_DETAIL = SUPPLIER_API + "/supplier_get_detail";
+
 
 //GOODS RECEIPT API
 export const GOODS_RECEIPT_API = SEVER_PORT + GOODS_RECEIPT_SERVICE + API_PREFIX + '/goods-receipt';
@@ -168,6 +170,7 @@ export const GOODS_RECEIPT_API_DELETE = GOODS_RECEIPT_API + '/invoice_delete'
 export const GOODS_RECEIPT_API_CREATE = GOODS_RECEIPT_API + '/invoice_create'
 export const GOODS_RECEIPT_API_UPDATE = GOODS_RECEIPT_API + '/invoice_update'
 export const GOODS_RECEIPT_API_GET_DETAIL = GOODS_RECEIPT_API + '/invoice_get_detail/'
+export const GOODS_RECEIPT_API_GET_INVOICE_DETAIL_BY_INVOICE = GOODS_RECEIPT_API + '/invoice_detail_get_all_by_invoice'
 
 //define code status error
 export const OK = 200;

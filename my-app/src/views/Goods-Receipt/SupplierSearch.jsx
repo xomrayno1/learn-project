@@ -157,7 +157,7 @@ function SupplierSearch({ setModalSupplier, onSetInvoice}) {
             <h4>Thông tin nhà cung cấp</h4>
             <Row style={{
                 backgroundColor: 'white',
-                padding: '15px',
+                padding: '15px', 
                 margin: '0px',
                 border: '1px solid'
             }}>
